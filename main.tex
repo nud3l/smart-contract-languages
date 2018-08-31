@@ -1,6 +1,6 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
-\title{Safer Smart Contract: a Literature Study}
+\title{Towards Safer Smart Contract: a Survey}
 \date{}
 \author{Dominik Harz \\
 IC3RE\\
@@ -11,31 +11,95 @@ d.harz@imperial.ac.uk}
 \maketitle
 
 \begin{abstract}
+Since their inception, smart contract
 We present a systematic review of existing smart contract languages
 \end{abstract}
 
 \section{Introduction}
 Smart contracts based on distributed ledgers combine two peculiar properties: anyone can freely create such contracts for the whole world to access, while each line of code might affect millions.
 These contracts are successful in their own regard:
-Ethereum, the largest platform for such contracts, has no X contract controlling a combined value of X million USD.
+Ethereum, the largest platform for such contracts, has no X contracts controlling a combined value of X million USD.
 However, security incidents caused by software bugs has lead to severe losses as in the DAO, Parity (1 and 2), and others.
 A majority of the current work concentrates on creating safer smart contracts.
 
+
 This survey takes on the verification perspective of these efforts and presents a survey of current work.
 
-\section{Background}
+\section{}
+
+\section{Electronic contracts}
+
 Bitcoin \cite{Nakamoto2008}
 Bitcoin Script \cite{BitcoinWiki2018Script}
 
 Ethereum \cite{Buterin2013,Wood2014}
 
+existing reviews:
+
+Smart contracts for distributed ledger technology with focus on Bitcoin Script, Ethereum, Nxt. Mentionds interactions between DLT layer (virtual machine) and the language interacting with the DLT layer (like Solidity)
+\cite{Seijas2017}
+
+
+An Empirical Analysis of Smart Contracts: Platforms, Applications, and Design Patterns
+Focus on Bitcoin and Ethereum
+Introduce taxonomy of smart contracts according to usage categories
+Design patterns in Ethereum smart contracts
+\cite{Bartoletti2017}
+
+Survey of Formal Languages for Contracts with a list of thirteen requirements for contract formalisaiton.
+(R1) modelling ofcontract participants; (R2) parametrized contract templates; (R3) (conditional) commitments, i.e., obligations, permissions, and prohibitions; (R4) abso- lute and relative temporal constraints; (R5) history-sensitive commitments; and (R6) basic arithmetic
+(R7) contrary-to-duty (reparation clauses); (R8) potentially infinite and repetitive contracts; (R9) compositionality; (R10) deterministic contract execution (run-time monitoring); (R11) blame as- signment; (R12) the isomorphism principle; and (R13) subject to analysis
+ \cite{Hvitved2010}.
+ 
+(deontic) logic based formalisms
+event-condition-action based formalisms enforce
+action/trace based formalisms
+other formalisms
+
+Few have formal semantics \cite{Andersen2006} \cite{Kyas2008} \cite{Xu2004}
+
+None cover all the requirements
+
+
+Scilla includes a survey of 13 different smart contract languages in section 5 \cite{Sergey2018}
+
+Securify has a comparison to related work in section 8 \cite{Tsankov2017}
+
+
 
 \section{Method}
-What is the focus?
-Security
-Bugs
 
-\section{•}
+
+
+\section{Contract languages}
+
+agent systems
+CNP \cite{Smith1980}
+FIPA CNP \cite{FIPA2002}
+
+
+Software engineering
+Design by contract \cite{Meyer1992}
+
+Business Contract Language \cite{Neal.2003}
+
+Smart contract templates
+Usage of Ricardian contract triple design pattern \cite{Clack2016}
+
+
+Event calculus
+XML formalisation of Event Calculus for tracking stte of smart contracts \cite{Farrell2004}
+
+
+VM level
+EVM \cite{Wood2014}
+IELE \cite{Kasampalis2018}
+Scilla \cite{Sergey2018}
+Michelson (Tezos) \cite{DynamicLedgerSolutions2017}
+
+\section{Verification}
+
+
 
 
 \bibliographystyle{ieeetr}
