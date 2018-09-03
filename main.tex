@@ -49,7 +49,7 @@ We present a systematic review of existing smart contract languages
 \end{abstract}
 
 \section{Introduction}
-The idea of contracts between autonomous parties goes back to autonomous agents using a network of agents to solve tasks dsitributed and based on individual contracts as presented in the contract net protocol (CNP) \cite{Smith1980}.
+The idea of contracts between autonomous parties goes back to autonomous agents using a network of agents to solve tasks dsitributed and based on individual contracts as presented in the contract net protocol (CNP) \cite{Smith1980,FIPA2002}.
 The idea was further elaborated, with a focus on minimising or rather excluding the need for trust in either party, by Szabo coining the term ``smart contract'' \cite{Szabo1997}.
 Significant thought has been directed towards creating languages and framework for electronic contracts even before the inception of distributed ledgers, for example, \cite{Andersen2006,Kyas2008,Xu2004}.
 However, distributed ledgers are the ones facilitating wide-spread adoption of electronic contracts.
@@ -79,8 +79,14 @@ Major efforts are taken to prevent such future incidents including:
 \textbf{Structure}: The remainder of our article is structured as follows. Section \ref{background} introduces the background of contracts and languages to express them. In section \ref{method} we describe how we conducted our survey. We present an overview and a classification of languages in section \ref{languages}. Similarly, verification approaches are examined in section \ref{verification}. We conclude in section \ref{conclusion}.
 
 
-\section{Electronic contracts}
+\section{Contracts and ledgers}
 \label{background}
+
+High-level languages
+
+distributed virtual machine
+
+Expression of contracts
 
 Bitcoin \cite{Nakamoto2008}
 Bitcoin Script \cite{BitcoinWiki2018Script}
@@ -136,9 +142,6 @@ symbolic
 \section{Contract languages}
 \label{languages}
 
-agent systems
-CNP \cite{Smith1980}
-FIPA CNP \cite{FIPA2002}
 
 Logic
 normative system with rights and obligations based on Prolog \cite{Michael2010}
@@ -185,17 +188,20 @@ EWASM \cite{Wanderer2015,EthereumFoundation2018ewasm}
 Register-based
 IELE \cite{Kasampalis2018}
 
-Not clear
+
+Liquidity \cite{OCamlProSAS2018}
+
 Scilla \cite{Sergey2018}
 Michelson (Tezos) \cite{DynamicLedgerSolutions2017}
 Pact \cite{Popejoy2017}
+Rholang \cite{Meredith2018}
 
 Container
 Hyperledger with Go, Java, Node.js \cite{Cachin2016}
 
 \section{Validation and Verification}
 \label{verification}
-\textbf{Formal verification}
+\textbf{Formal methods}
 
 F*
 Formal Verification first paper \cite{Bhargavan2016}
@@ -212,12 +218,11 @@ Towards verifying contracts \cite{Amani2018}
 Overview of work by Ethereum Foundation mostly \citeauthor{Hirai2018} \cite{Hirai2018}
 
 
-
-\textbf{Symbolic analysis/execution}
+\textbf{Model checking}
 Securify \cite{Tsankov2017}
 Oyente \cite{Luu2016}
-Mythril
-Maian
+Mythril \cite{Mueller2018}
+Maian \cite{Nikolic2018}
 
 Zeus \cite{Kalra2018}
 Detection of Effectively Callback Free Objects \cite{Grossman2017}
