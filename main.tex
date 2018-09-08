@@ -1,6 +1,8 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc}
+\documentclass{llncs}
 
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{graphicx}
 
 
 \usepackage[backend=biber,style=numeric,citestyle=ieee,doi=false,isbn=false,arxiv=false]{biblatex}
@@ -31,22 +33,35 @@
 % \addbibresource{ref.bib} % Overleaf
 \addbibresource{../../bib/library.bib} % local
 
-
-\title{Towards Safer Smart Contract: an Overview on Languages and Verification}
-\date{}
-\author{
-Dominik Harz\\ \texttt{d.harz@imperial.ac.uk} \and
-William Knottenbelt\\ \texttt{wjk@imperial.ac.uk}
-}
-
+\usepackage{todonotes}
+\newcommand{\dha}[1]{\todo[linecolor=yellow,backgroundcolor=yellow!25,bordercolor=yellow,inline,caption={}]{Comment by Dominik: #1}}
+\newcommand{\todha}[1]{\todo[linecolor=yellow,backgroundcolor=yellow!25,bordercolor=yellow,inline,caption={}]{Todo for Dominik: #1}}
 
 \begin{document}
+
+
+\title{Towards Safer Smart Contract: A Survey of Languages and Verification Efforts}
+\author{Dominik Harz}
+\institute{Imperial College London \\ \email{d.harz@imperial.ac.uk}}
+
+
+
 \maketitle
 
 \begin{abstract}
-Since their inception, smart contract
-We present a systematic review of existing smart contract languages
+Since their inception, smart contract have gaining wide-spread popularity with the development of cryptocurrencies.
+Those currencies have a combined market capitalisation of over USD 205 billion.
+Smart contracts have direct access to these currencies and implement a wide range of programs.
+However, implementation issues in smart contracts caused severe losses to the users of such contracts.
+Major efforts are taken to improve upon the security of such contracts.
+We categorise smart contract languages into high-level, intermediary, and low-level languages.
+To that end, we present an overview of the languages in terms of paradigm, type, instruction set, distributed ledger assumptions, security features, and current status.
+Further, we survey verification tools and methods for smart contract and distributed ledgers. 
+Accordingly, we introduce their verification approach, level of automation, completeness assumption, supported languages, extensibility, and current status.
+Various efforts on multiple levels are taken with promising results language design as well as formal methods. 
+Last, we present future research directions including formal semantics, verified compilers, and optimisations.
 \end{abstract}
+\dha{Rework problem statement and results.}
 
 \section{Introduction}
 The idea of contracts between autonomous parties goes back to autonomous agents using a network of agents to solve tasks dsitributed and based on individual contracts as presented in the contract net protocol (CNP) \cite{Smith1980,FIPA2002}.
@@ -71,175 +86,210 @@ Major efforts are taken to prevent such future incidents including:
 \end{itemize}
 
 \textbf{Contribution} The amount of new languages, approaches for verification, and applicability of verification methods becomes quickly opaque. Due to the practical impact of these approaches to real-world smart contracts, we present a literature survey on current languages and verification efforts.
-\begin{itemize}
-\item We contribute an overview of contract languages including a classification of language paradigm, key security features, and state of implementation\footnote{As of September 2018}.
-\item We describe different efforts to verify software including symbolic analysis and formal verification. This includes an analysis of applicability of different techniques, limitations, and current availability of methods.
-\end{itemize}
+We contribute an overview of contract languages including a classification of language paradigm, key security features, and state of implementation\footnote{As of September 2018}.
+Further, we describe different efforts to verify software including symbolic analysis and formal verification. This includes an analysis of applicability of different techniques, limitations, and current availability of methods.
 
 \textbf{Structure}: The remainder of our article is structured as follows. Section \ref{background} introduces the background of contracts and languages to express them. In section \ref{method} we describe how we conducted our survey. We present an overview and a classification of languages in section \ref{languages}. Similarly, verification approaches are examined in section \ref{verification}. We conclude in section \ref{conclusion}.
 
+\dha{Update structure once finished}.
 
-\section{Contracts and ledgers}
+\section{Background}
 \label{background}
 
-High-level languages
+% Electronic contracts have early beginnings in the AI and agent community where they are used as a basis for interaction \cite{Smith1980}. Moreover, electronic contracts are discussed and used for automating or encoding traditional contracts in organisational and business contexts \cite{Hvitved2010}. Specifically, Ricardian contracts are oft cited as they introduce encoding natural language contracts into electronic contracts than can be executed by computer systems \cite{Grigg2004}. Later, eletronic contracts are applied to enforce agreements between mutually untrusted entities \cite{Szabo1997}.
 
-distributed virtual machine
+\dha{What level of formalism is needed? For now, the need to have formal definitions of languages etc. might not be necessary. Check this.}
 
-Expression of contracts
-
-Bitcoin \cite{Nakamoto2008}
-Bitcoin Script \cite{BitcoinWiki2018Script}
-
-Ethereum \cite{Buterin2013,Wood2014}
-
-existing reviews:
-
-Smart contracts for distributed ledger technology with focus on Bitcoin Script, Ethereum, Nxt. Mentionds interactions between DLT layer (virtual machine) and the language interacting with the DLT layer (like Solidity)
-\cite{Seijas2017}
-
-
-An Empirical Analysis of Smart Contracts: Platforms, Applications, and Design Patterns
-Focus on Bitcoin and Ethereum
-Introduce taxonomy of smart contracts according to usage categories
-Design patterns in Ethereum smart contracts
-\cite{Bartoletti2017}
-
-Survey of Formal Languages for Contracts with a list of thirteen requirements for contract formalisaiton.
-(R1) modelling ofcontract participants; (R2) parametrized contract templates; (R3) (conditional) commitments, i.e., obligations, permissions, and prohibitions; (R4) abso- lute and relative temporal constraints; (R5) history-sensitive commitments; and (R6) basic arithmetic
-(R7) contrary-to-duty (reparation clauses); (R8) potentially infinite and repetitive contracts; (R9) compositionality; (R10) deterministic contract execution (run-time monitoring); (R11) blame as- signment; (R12) the isomorphism principle; and (R13) subject to analysis
- \cite{Hvitved2010}.
- 
-(deontic) logic based formalisms
-event-condition-action based formalisms enforce
-action/trace based formalisms
-other formalisms
-
-Few have formal semantics \cite{Andersen2006} \cite{Kyas2008} \cite{Xu2004}
-
-None cover all the requirements
+\begin{itemize}
+\item Argue about trust assumption
+\begin{itemize}
+\item Semi-trusted or trusted entity can enforce a contract (typically in the AI/MAS community)
+\item Monitoring of compliance rather than enforcement \cite{Kyas2008} typically of normative behaviour (permissions, obligations, prohibitions)
+\item Decentralised ledgers without trusted parties \cite{Nakamoto2008,Buterin2013}
+\item Consensus protocol enforces rules in smart contract
+\end{itemize}
+\item Argue about level of language
+\begin{itemize}
+\item High-level language should fulfil the terms of a contract
+\item Low-level language needs to implement the contract in a deterministic, distributed VM \cite{BitcoinWiki2018Script}\cite{Wood2014}
+\item Intermediary representation for optimisation
+\end{itemize}
+\item Different angles on contract languages and contracts
+\begin{itemize}
+\item Smart contracts are a way of implementing legal contracts \cite{Neal.2003,Governatori2006,Clack2016}
+\item Smart contracts are an enforcement of an agreement (not necessarily part of a larger legal contract) \cite{Szabo1997,Nakamoto2008,Buterin2013}
+\end{itemize}
+\item Security of contracts absolutely necessary
+\begin{itemize}
+\item Design of high-level languages that encourage secure programming
+\item Design of IR/low-level languages that help with verification
+\item Design of verified compilers
+\item Application of verification methods
+\end{itemize}
+\end{itemize}
 
 
-Scilla includes a survey of 13 different smart contract languages in section 5 \cite{Sergey2018}
-
-Securify has a comparison to related work in section 8 \cite{Tsankov2017}
-
+% Design by contract \cite{Meyer1992}
 
 
 \section{Method}
 \label{method}
+\dha{Possible remove this section and include the two separate parts (langauges and tools) in the actual sections.}
 
-imperative
-- object-oriented
-- procedural
-declarative
-- functional
-- logic
-symbolic
+\begin{itemize}
+\item \textbf{RQ:} How to make contracts behave the way they should? 
+\begin{itemize}
+\item Langauge specifics
+\item Verification efforts
+\end{itemize}
+\item Classification of languages. Similar to other efforts in software development (for example LLVM \cite{Lattner2004} or JavaScript \cite{Gardner2017})
+\begin{itemize}
+\item high-level
+\item intermediary
+\item low-level
+\end{itemize}
+\item process: high-level $\rightarrow$ verified compiler $\rightarrow$ IR $\rightarrow$ verified compiler $\rightarrow$ low-level language
+\item A verified compiler requires defined semantics of the involved languages \cite{Hirai2017}
+\end{itemize}
 
+\subsection{Smart contract languages}
+A multitude of languages for smart contracts exists. The overview we present is based on six different criteria as listed below.
+\begin{itemize}
+\item \textbf{Paradigm}: Describes the main paradigm of the language, for example, stack-based, register-based, object-oriented, procedural, functional, logic, or symbolic.
+\item \textbf{Type}:
+\item \textbf{Instruction set}:
+\item \textbf{Distributed ledger assumption}:
+\item \textbf{Security features}:
+\item \textbf{Current status}: 
+\end{itemize}
+
+\subsection{Verification tools}
+\dha{Rework this into a list}.
+Verification efforts can be characterised by five criteria \cite[173]{Huth2004}. 
+\emph{Proof- or model based}
+\emph{Level of automation}
+\emph{Full- or property verification}
+\emph{Application domain}
+\emph{Pre- or post-development}
+From these criteria we used the first three.
+The application domain concerns smart contracts on a deterministic distributed ledger.
+On these ledgers smart contracts are \emph{immutable}, hence, pre-development is desirable. Otherwise, they can only be used to find bugs that are already introduced in the software and mostly requires major efforts to resolve or update the contracts.
+Additionally, we included the language that is covered by the specific tool as well as the availability of source code in terms of open or closed source. The last property is interesting to verify results, experiment with the available tools, and potentially expend them.
 
 
 \section{Contract languages}
 \label{languages}
 
+\dha{Summarise and order these languages that it makes sense.}
 
-Logic
-normative system with rights and obligations based on Prolog \cite{Michael2010}
+\subsection{High-level languages}
+\begin{itemize}
+\item Solidity \cite{Ethereum2018Solidity}
+\item Vyper \cite{Ethereum2018Vyper}
+\item Bamboo \cite{Hirai2018Bamboo}
+\item Flint \cite{Schrans2018}
+\item Obsidian \cite{Coblenz2017}
+\item Language-oriented programming \cite{Burge2018DSL}: create a language for each specific use case. Use a modelling language (Pyramid Modelling Language hypothetical) to describe properties of a contract in a model. Use this modelling language to create other languages for communication about the contract, test generation or model checking.
+\item Liquidity \cite{OCamlProSAS2018}
+\item Logic normative system with rights and obligations based on Prolog \cite{Michael2010}
+\item Business Contract Language \cite{Neal.2003} QoS Contract langauge formal specification and verification with Maude \cite{Braga2009} Maude \cite{Clavel2007} Business Contract Language formal analysis \cite{Governatori2006}
+\item Smart contract templates Usage of Ricardian contract triple design pattern \cite{Clack2016}
+\item Event calculus XML formalisation of Event Calculus for tracking state of smart contracts \cite{Farrell2004}
+\item Functional DAML \cite{Shaul2018,Meier2018,Lippmeier2018,Huschenbett2018,Bernauer2018,Maric2018,Bleikertz2018,Lochbihler2018,Pilav2018}
+\item Pyramid Scheme \cite{Burge2018} is functional and imperative. It is based on the Scheme programming language which supports different paradigms. It compiles to an Abstract Machine Language and then to EVM bytecode
+\item Mention Rootstock as an extension or rather pegged sidechain to allow EVM contracts with Bitcoin \cite{Lerner2015}
+\end{itemize}
+
+\subsection{Intermediary languages}
+
+\begin{itemize}
+\item Simplicity is a pure functional language that places itself as an intermediary representation between a higher level (functional) language such as Coq or Haskell \cite{OConnor2017}. It compiles to a low-level language defined in the same article, called Bit Machine. Simplicity has a formal semantics defined in Coq. Both, Simplicity and Bit Machine are not Turing complete, however they accept finite recursions and loops. The idea is to create a language that is more expressive than Bitcoin Script, but offers more security features and restrictions than the EVM. Notably, it is build in an UTXO model and is not concerned with the global state of the underlying ledger.
+\item Scilla is a functional langauge \cite{Sergey2018}
+\item IULIA \cite{EthereumFoundation2018IULIA}
+\item IELE \cite{Kasampalis2018}
+\item EthIR \cite{Albert2018}
+\end{itemize}
+
+\subsection{Low-level languages}
+\begin{itemize}
+\item Stack-based Bitcoin script \cite{BitcoinWiki2018Script}
+\item Stack-based EVM \cite{Wood2014}
+\item Stack-based (?) EWASM \cite{Wanderer2015,EthereumFoundation2018ewasm}
+\item Michelson (Tezos) \cite{DynamicLedgerSolutions2017}
+\item BitMachine \cite{OConnor2017}
+\item Register-based IELE \cite{Kasampalis2018}
+\end{itemize}
+
+\dha{Need to look those up in more detail.}
+\begin{itemize}
+\item Pact \cite{Popejoy2017}
+\item Rholang \cite{Meredith2018}
+\end{itemize}
+
+\subsection{General purpose languages}
+Hyperledger Fabric uses Docker containers with smart contracts (so called ``chaincode'') written in Go, Java, or Node.js \cite{Cachin2016}. These languages are not designed originally for smart contracts. Thus, the global state of the ledger needs to imported through special functions that are typically not available in these languages.
 
 
-Software engineering
-Design by contract \cite{Meyer1992}
-
-Business Contract Language \cite{Neal.2003}
-
-Domain Specific Languages
-QoS Contract langauge formal specification and verification with Maude \cite{Braga2009} Maude \cite{Clavel2007}
-Business Contract Language formal analysis \cite{Governatori2006}
-
-
-Smart contract templates
-Usage of Ricardian contract triple design pattern \cite{Clack2016}
-
-
-Event calculus
-XML formalisation of Event Calculus for tracking state of smart contracts \cite{Farrell2004}
-
-\textbf{Higher level}
-Solidity \cite{Ethereum2018Solidity}
-Vyper \cite{Ethereum2018Vyper}
-Bamboo \cite{Hirai2018Bamboo}
-Flint \cite{Schrans2018}
-
-
-Functional
-DAML \cite{Shaul2018,Meier2018,Lippmeier2018,Huschenbett2018,Bernauer2018,Maric2018,Bleikertz2018,Lochbihler2018,Pilav2018}
-Simplicity \cite{OConnor2017} with formal semantics in Coq
-Scilla \cite{Sergey2018}
-Pyramid Scheme \cite{Burge2018}
-
-Rootstock as an extension or rather pegged sidechain to allow EVM contracts with Bitcoin \cite{Lerner2015}
-
-VM level
-Stack-based
-Bitcoin script \cite{BitcoinWiki2018Script}
-EVM \cite{Wood2014}
-EWASM \cite{Wanderer2015,EthereumFoundation2018ewasm}
-
-Register-based
-IELE \cite{Kasampalis2018}
-
-
-Liquidity \cite{OCamlProSAS2018}
-
-Scilla \cite{Sergey2018}
-Michelson (Tezos) \cite{DynamicLedgerSolutions2017}
-Pact \cite{Popejoy2017}
-Rholang \cite{Meredith2018}
-
-Container
-Hyperledger with Go, Java, Node.js \cite{Cachin2016}
-
-\section{Validation and Verification}
+\section{Verification methods}
 \label{verification}
-\textbf{Formal methods}
 
-F*
-Formal Verification first paper \cite{Bhargavan2016}
-EVM semantics in F* \cite{Grishchenko2018}
+\include{verification-table}
 
-K framework \cite{Rosu2007} 
-KEVM \cite{Hildenbrandt2017}
-Language independent \cite{Chen2018}
-ERC20 etc \cite{Park2018}
+\subsection{Proof-based methods}
+\begin{itemize}
+\item \emph{F*}: Formal Verification first paper \cite{Bhargavan2016}. A complete small-step semantics of the EVM semantics is presented in \cite{Grishchenko2018}. Based on this semantics the authors have implemented in large parts the EVM in F*. F* has then been compiled to OCaml code to verify the EVM implementation against the official Ethereum test suite where it passed 304 of 624 of the tests (due to missing functionalities). 
+\dha{In the KEVM paper it is said to be 40,683 tests?}
+\item Lem based \cite{Mulligan2014}. EVM definition in Lem \cite{Hirai2017}. Towards verifying contracts \cite{Amani2018}. Overview of work by Ethereum Foundation mostly \citeauthor{Hirai2018} \cite{Hirai2018}
+\item Coq \cite{Sergey2018} Coq F* \cite{DynamicLedgerSolutions2017}
+\end{itemize}
 
-Lem based \cite{Mulligan2014}
-EVM definition in Lem \cite{Hirai2017}
-Towards verifying contracts \cite{Amani2018}
-Overview of work by Ethereum Foundation mostly \citeauthor{Hirai2018} \cite{Hirai2018}
+\subsection{Model-based methods}
 
+\begin{itemize}
+\item Securify is proposal for a domain-specific model checker for smart contracts \cite{Tsankov2017}. It compiles EVM bytecode to semantics facts and than uses a DSL to define compliance and violation patterns to verify the semantic facts. The properties are build using Datalog, a logic language. It classifies behaviours of a contract in compliance (matched by compliance properties), violations (matched by violation properties) and warnings (matched by neither).
+\item The K framework is build based\cite{Rosu2007} KEVM \cite{Hildenbrandt2017} Language independent \cite{Chen2018} ERC20 etc \cite{Park2018}
+\item Oyente \cite{Luu2016} EthIR \cite{Albert2018}
+\item Mythril is a symbolic execution of EVM bytecode \cite{Mueller2018}. EVM bytecode is disasseambled into a Mythril object. usage of propositional logic to reason about the state space represented as a graph. It is based on LASER \cite{Mueller2018LASER} and uses Z3 as a SAT solver.
+\item Maian \cite{Nikolic2018}
+\item Zeus \cite{Kalra2018}
+\item Detection of Effectively Callback Free Objects (ECF) \cite{Grossman2017}
+\end{itemize}
 
-\textbf{Model checking}
-Securify \cite{Tsankov2017}
-Oyente \cite{Luu2016}
-Mythril \cite{Mueller2018}
-Maian \cite{Nikolic2018}
+\section{Discussion}
+\label{discuss}
+\begin{itemize}
+\item What makes a language secure? if it can be formally verified or is symboloic execution and modelling enough?
+\item What makes a language easier to formally verify?
+\begin{itemize}
+\item restricted instruction set (finite recursion, if any; finite loops, if any)
+\item bounded vs unbounded integers (unbounded better?)
+\end{itemize}
+\item How to make current languages safer? Check implementations with model checkers!
+\end{itemize}
 
-Zeus \cite{Kalra2018}
-Detection of Effectively Callback Free Objects \cite{Grossman2017}
-
-
-
-\textbf{Proof carrying code}
-NECTAR as an extension to Bitcoin's UTXO model and Script set \cite{Covaci2018}
-
-\textbf{Game theoretic approaches}
-gmae theory and markov devision process (MDP) model \cite{Bigi2015}
-
+\section{Related work}
+\label{related}
+Other surveys:
+\begin{itemize}
+\item Smart contracts for distributed ledger technology with focus on Bitcoin Script, Ethereum, Nxt. Mentionds interactions between DLT layer (virtual machine) and the language interacting with the DLT layer (like Solidity) \cite{Seijas2017}
+\item An Empirical Analysis of Smart Contracts: Platforms, Applications, and Design Patterns; Focus on Bitcoin and Ethereum; Introduce taxonomy of smart contracts according to usage categories; Design patterns in Ethereum smart contracts \cite{Bartoletti2017}
+\item Survey of Formal Languages for Contracts with a list of thirteen requirements for contract formalisaiton. ; (R1) modelling ofcontract participants; (R2) parametrized contract templates; (R3) (conditional) commitments, i.e., obligations, permissions, and prohibitions; (R4) abso- lute and relative temporal constraints; (R5) history-sensitive commitments; and (R6) basic arithmetic
+(R7) contrary-to-duty (reparation clauses); (R8) potentially infinite and repetitive contracts; (R9) compositionality; (R10) deterministic contract execution (run-time monitoring); (R11) blame as- signment; (R12) the isomorphism principle; and (R13) subject to analysis;  \cite{Hvitved2010}; (deontic) logic based formalisms, event-condition-action based formalisms enforce, action/trace based formalisms, other formalisms; Few have formal semantics \cite{Andersen2006} \cite{Kyas2008} \cite{Xu2004}; None cover all the requirements
+\item Scilla includes a survey of 13 different smart contract languages in section 5 \cite{Sergey2018}
+\item Securify has a comparison to related work in section 8 \cite{Tsankov2017}
+\end{itemize}
 
 
 \section{Conclusion}
 \label{conclusion}
-Hydra \cite{Breidenbach2018}
+
+Other interesting approaches:
+\begin{itemize}
+\item Hydra \cite{Breidenbach2018}
+\item NECTAR as an extension to Bitcoin's UTXO model and Script set \cite{Covaci2018}
+\item Game theory and markov decision process (MDP) model \cite{Bigi2015}
+\end{itemize}
+
 
 
 \printbibliography
