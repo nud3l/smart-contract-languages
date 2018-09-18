@@ -1,0 +1,167 @@
+\section{Contract languages}
+\label{languages}
+
+Figure \ref{fig:lang} gives an overview of smart contract languages.
+The approach in (A) is often used to allow program optimisation and verification (e.g. \cite{Lattner2004}). 
+Among the projects that follow this approach are the future Ethereum development with Yul \cite{EthereumFoundation2018IULIA}, and Tezos with Liquidity \cite{OCamlProSAS2018} and Michelson \cite{DynamicLedgerSolutions2017}.
+Likewise, Scilla based on Coq is intended to represent an IR that is targeted by more general languages and compiles down to be executed on a distributed VM \cite{Sergey2018}.
+
+Smart contracts are a comparably new discipline with Bitcoin being ten years old and Ethereum a bit older than three years.
+Hence, in the early stages smart contracts were designed differently as represented by (B).
+Bitcoin and Bitcoin Script \cite{BitcoinWiki2018Script} skip any high-level language altogether and programmers need to write code directly in the low-level stack-based language.
+Ethereum, on the other hand, offers multiple high-level languages like Solidity \cite{Ethereum2018Solidity} and Vyper \cite{Ethereum2018Vyper}.
+These languages compile directly to EVM bytecode. 
+
+\begin{figure}
+\label{fig:lang}
+\includegraphics[width=\textwidth]{fig/Language.pdf}
+\caption{Different levels of smart contract languages with syntax closely resembled to Solidity (high-level), Scilla (IR), and EVM bytecode (low-evel). (A) represents an optimised version of compiling high-level languages towards the bytecode that allows for example for verification of the IR contract and code optimisations, for example envisioned by \cite{Sergey2018,OCamlProSAS2018}. (B) represents the straightforward compilation from high-level language to bytecode representation as currently employed by Solidity and the EVM \cite{Ethereum2018Solidity,Wood2014}.}
+\end{figure}
+
+
+\subsection{Overview}
+The overview we present in table \ref{tab:high-level} is based on five different criteria as listed below. The table gives a general overview. We explain the security properties of the languages within the following subsections.
+\begin{itemize}
+\item \emph{Type}: We differentiate between high-level, IR, and low-level languages.
+\item \emph{Paradigm}: This describes the main paradigm of the language. Note that most languages support multiple paradigms and this criterion is more of an indication of the prevalent paradigm.
+\item \emph{Instructions}: The possible instruction set that a language supports can be restricted or Turing-complete.
+\item \emph{Semantics}: Languages have a formal or informal semantic. Formal semantics define the exact behaviour of programs written in that language. Informal semantics leave interpretation and mostly result in having the compiler define the exact behaviour.
+\item \emph{Metering}: Smart contracts executed on a distributed ledger are re-executed by up to several thousand nodes. As these computations are costly, metering is a way to charge and limit the execution of a program.
+\end{itemize}
+\input{language-tables}
+
+
+\subsection{Languages}
+
+\paragraph{High-level}
+Solidity is the most widely used language and created for Ethereum \cite{Ethereum2018Solidity}.
+Bamboo is designed with formal verification in mind and makes state-transition explicit \cite{Hirai2018Bamboo}. 
+Vyper restricts instructions (e.g.\ finite loops and no recursive calls) and prevents other features such as inheritance and overloading\cite{Ethereum2018Vyper}. 
+Flint further introduces the definition of function access (by defining the address of the caller) and creates an asset type. 
+Pyramid Scheme is functional and imperative \cite{Burge2018}. This should promote clear separation of state-changing and static functions.
+Common to the above languages is that they target the EVM.
+
+High-level languages are proposed for other VMs or independent from the ledger implementation.
+Obsidian models contracts as finite state machines (FSM) with explicit state transition functions \cite{Coblenz2017}.
+Rholang focusses on concurrency and message-passing with statically typed communication channels \cite{Meredith2018}.
+Liquidity focusses on restricted instruction sets and enables formal verification by being based on OCaml \cite{OCamlProSAS2018}.
+Rholang and Liquidity are intended for permissionless distributed ledgers.
+DAML is functional and developed for financial applications, primarily on permissioned ledgers \cite{Shaul2018,Meier2018,Lippmeier2018,Huschenbett2018,Bernauer2018,Maric2018,Bleikertz2018,Lochbihler2018,Pilav2018}.
+Similar, Pact is designed for the Kadena permissioned blockchain \cite{Popejoy2017}.
+Both have a restricted instruction set and with the intention to promote formal verification.
+
+Several other contract languages have been developed outside the context of distributed ledgers. The Business Contract Language supports creating and monitoring legal contracts \cite{Neal.2003,Governatori2006}. Specific DSLs have been created for selected use cases,e.g.\, Quality of Service contracts \cite{Braga2009}.
+Other such languages are based on a form of logic and implemented as a dialect of Prolog, e.g.\ \cite{Michael2010}.
+Further, event calculus with an XML formalisation is used model and track state of contracts \cite{Farrell2004}.
+% Last, it is proposed to create a language for each specific use case or user type of a contract based on a general-purpose modelling language \cite{Burge2018DSL}.
+
+\paragraph{Intermediary languages}
+Simplicity is a pure functional language that places itself as an intermediary representation between a higher level (functional) language and a low-level VM \cite{OConnor2017}. 
+%It compiles to a low-level language called Bit Machine. 
+It is built in a UTXO model and is not concerned with the global state of the underlying ledger.
+Scilla is functional with an automata-based design using explicit state transition functions and handling for communication patterns \cite{Sergey2018}. The semantics are defined in Coq, and formal verification is one of the primary considerations.
+Yul (formerly IULIA and JULIA) is introduced as part of Solidity and its compiler \cite{EthereumFoundation2018IULIA}. 
+%The idea is to use it as an IR compilation target for multiple high-level languages and optimisations. Further, Yul aims to target the current (1.0) and planned updated EVM (1.5) as well as eWASM.
+EthIR is a decompilation target for EVM bytecode \cite{Albert2018}. Its purpose is making the control and data flow of smart contracts explicit allowing analysis such as symbolic execution to operate on its code. 
+IELE is derived from its formal semantics and used as an IR for smart contracts \cite{Kasampalis2018}. The syntax is similar to LLVM and has been designed using the K framework \cite{Rosu2007}.
+Scilla, Yul, EthIR, and IELE use an account-based model for the blockchain with global state.
+
+\paragraph{Low-level}
+% The low-level languages in our survey are stack-based. 
+Smart contracts are stored on a distributed ledger in the low-level language to be executed by the distributed VM.
+Bitcoin scripts are a sequence of op-codes stored within one transaction in the Bitcoin network\cite{BitcoinWiki2018Script}. 
+%Hence, these contracts need to be re-written and included in the blockchain once the transaction is spent. 
+Possible contracts are for example Hashed Timelock Contracts (HTLCs) \cite{BitcoinWiki2018HTLC}.
+The EVM stores programs in the data field of an address in the Ethereum network \cite{Wood2014}. State changing functions are invoked with sending a transaction to the contract. Non-state changing functions are executed locally and do not use gas. Contract functions in the EVM have a signature that can be called by using the contract's address and its Application Binary Interface (ABI).
+eWASM is a proposed successor of the EVM based on a deterministic variant of Web Assembly (WASM) \cite{Wanderer2015,EthereumFoundation2018ewasm}.
+Michelson is the low-level language of the Tezos blockchain \cite{DynamicLedgerSolutions2017}. It uses accounts as well but is designed to promote formal verification.
+% An exception to the low-level languages stored on the blockchain is Scilla. The blockchain Zilliqa directly stores Scilla contracts on its chain.
+
+\paragraph{General purpose languages}
+Apart from using DSLs for programming smart contracts, projects like Hyperledger Fabric or Neo use general purpose programming languages.
+This can have advantages as those languages are already known to potential developers, and verification tools might already exist.
+For example, Hyperledger Fabric uses Docker containers with smart contracts (so-called ``chaincode'') written in Go, Java, or Node.js \cite{Cachin2016}. 
+
+However, as these languages are originally not designed for smart contracts the global state of the ledger needs to imported through special functions that are typically not available in these languages.
+Moreover, these languages often have support for infinite loops and recursion which are not desirable.
+Particular types like assets or units also need to be declared. 
+This can be achieved by using libraries, but arguably, a developer then has to adjust to the new principles imposed by such a library.
+
+\subsection{Paradigm}
+Apart from the dominant paradigm of the languages listed in table \ref{tab:high-level}, special design decisions were made in the languages.
+
+\paragraph{Explicit state transitions}
+Languages including Scilla, Rholang, Bamboo, and Obsidian as well as interfaces to Solidity \cite{Mavridou2018} represent contracts as finite state machines (FSM) or automata. This concept prevents reentrancy and allows to create explicit state transition function. A transaction that is sent to a contract with the intention to change the state either is successful or raises an exception. Moreover, this principle should prevent any calls to other contracts within a state transition function. A state might end or begin with a message (i.e.\ tail-call), but no have any call in between.
+% Also, EthIR presents precise data and control flow that allows building rule-based languages. This supports the security of contracts by allowing verification methods to operate on it.
+
+\begin{lstlisting}[caption={A separation of states represented in Bamboo, where each state represents a different contract at the same address.},label=lst:fsm,language=Solidity]
+contract Voting() { ... }
+contract VotingClosed() { ... }
+contract Result() { ... }
+\end{lstlisting}
+
+\paragraph{Functional programming}
+Pyramid Scheme, Vyper, Simplicity, Scilla, and Bamboo as well as Pact and DAML for permissioned chains, use functional programming paradigms.
+
+\paragraph{Logic programming}
+Logic-based languages are interesting as they closely resemble natural language contracts and have been explored in \cite{Idelberger2016}. However, they transfer determining the implementation of statements to a lower level as ultimately, the ledger needs to be deterministic.
+
+\paragraph{Stack-based}
+All low-level languages are stack-based. Their low-level implementation makes a manual inspection of contracts cumbersome. Hence, automated tools can help to support such verification efforts. Moreover, decompilers are used to convert the stack into a higher level language.
+
+\subsection{Instruction set}
+\paragraph{Restricted instructions}
+Vyper, Liquidity, DAML, Pact, Simplicity, Scilla, Bitcoin Script, and Michelson restrict instructions, whereby Bitcoin Script is likely the most restrictive language (also considering that most op-codes are deactivated in Bitcoin). 
+The idea is to create a language that is more expressive than Bitcoin Script but offer more security than EVM.
+In practice, infinite loops and recursion would block any node in the network executing the smart contract. As this is not the desired behaviour, it can be directly restricted by the language. Other languages, however, offer such constructs.
+The EVM and eWASM, on the other hand, strive for Turing-completeness. While there is a discussion of restricting VMs for security reasons, eWASM is supposed to be backwards compatible with the EVM.
+
+\paragraph{Calls}
+Another critical aspect of the instruction set is the possibility of calling other contracts. Executing code in other contracts can potentially introduce unexpected behaviour. Languages that operate according to the FSM or automata principle use \emph{tail-calls}, e.g.\ \cite{Sergey2018}. This principle is also suggested for Solidity \cite{ConsenSys2018Security}.
+
+\begin{lstlisting}[caption={Tail calls implemented in Solidity.},label=lst:tail-call,language=Solidity]
+contract Funding() { 
+	...
+	
+	function fund(uint id) public payable { ... }
+	function claim(uint id) public {
+		require(msg.sender == owner[id]);
+		funds[id] = 0;
+		msg.sender.transfer(funds[id]);
+	}
+}
+\end{lstlisting}
+
+\paragraph{Restrict overriding}
+Overriding functions can lead to issues when reviewing code as it may not be clear which code is actually executed. Assume two functions as listed below.
+\begin{lstlisting}[caption={Function overriding with different inputs.},label=lst:tail-call,language=Solidity]
+function transfer(address to, uint amount) public {}
+function transfer(address from, address to, uint amount) public {}
+\end{lstlisting}
+
+\paragraph{Overflow}
+IELE has been developed with the intention to create a VM that enables formal verification. Arbitrary-precision signed integers are used to prevent overflows.
+
+\paragraph{Code re-use}
+\citeauthor{Pontiveros2018} proposes to re-use EVM code to optimise the space usage of code with a new op-code \cite{Pontiveros2018}. This technique could be applied to reference proven secure code patterns.
+
+\subsection{Semantics}
+
+\paragraph{Formal semantics}
+Bamboo, Liquidity, Michelson, and Pact are planned to have a formal semantics once the languages are officially released.  Simplicity and Scilla have a formal semantics defined in Coq. IELE is defined in K, and its implementation has been derived from the formal semantics.
+Low-level languages have been informally defined. In later work, the EVM has been formally defined in K \cite{Hildenbrandt2017}, Lem \cite{Hirai2017}, and F* \cite{Grishchenko2018}.
+As other languages have been informally defined, the correct interpretation of programs is left to the compiler. Creating a formal semantic for a higher-level language can enable the creation of verified compilers for said language and support verification efforts.
+
+\paragraph{Types}
+Flint introduces additional types for assets. Smart contracts typically operate on some form of an asset like fungible or non-fungible tokens. Instead of using existing types, particular asset types can account for the critical handling of assets.
+
+\subsection{Metering}
+Most languages inherit their metering mechanism from the underlying VM. The standard practice is to use gas and a gas limit to restrict instructions. Rholang's phlogiston essentially implements the gas concept as well.
+However, Bitcoin script uses a maximum script size of 10,000 bytes as a restriction. Merkelized Abstract Syntax Tree (MAST) is a proposal to allow larger scripts without increasing the script size limit \cite{Harding2017}.
+
+\subsection{Additional security properties:} 
+Apart from the features that a language supports, practices can be applied to prevent the unintended behaviour.
+In \cite{Wohrer2018}, present six patterns to enhance the security of Solidity smart contracts.
+Further, best practice libraries are often used to prevent commonly known issues, e.g.\ \cite{ConsenSys2018Security}.
+For example, integer overflows in the EVM are prevented by using explicit checks.
+Moreover, templates can be used to create smart contracts \cite{Clack2016}.

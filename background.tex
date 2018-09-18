@@ -1,0 +1,70 @@
+\section{Safer smart contracts}
+\label{background}
+
+% Electronic contracts have early beginnings in the AI and agent community where they are used as a basis for interaction \cite{Smith1980}. Moreover, electronic contracts are discussed and used for automating or encoding traditional contracts in organisational and business contexts \cite{Hvitved2010}. Specifically, Ricardian contracts are oft-cited as they introduce encoding natural language contracts into electronic contracts that can be executed by computer systems \cite{Grigg2004}. Later, electronic contracts are applied to enforce agreements between mutually untrusted entities \cite{Szabo1997}.
+
+
+% If everyone trusted each other, contracts would not be a necessity.
+% However, a significant amount of interaction is conducted between untrusted or semi-trusted parties.
+
+\subsection{Contracts and trust}
+
+Contracts are a requirement resulting from an inherent lack of trust between parties.
+Electronic contracts have been considered as a way to encode legal contracts (e.g. Ricardian contracts \cite{Grigg2004}) in a Domain Specific Language (DSL). 
+They can be processed digitally enabling automated business processes.
+How to encode contracts has been surveyed in \cite{Hvitved2010}. 
+The author list 13 different requirements that a language needs to fulfil.
+He found that those languages can be roughly categorised into four different formalisms including deontic logic, event-condition-action, action-trace, and others.
+Most of these languages do not have formal semantics except for \cite{Andersen2006,Kyas2008,Xu2004}.
+Underlying those languages is often the assumption that parties adhere to the contract.
+Rather than enforcing contracts through a consensus protocol, those systems monitor compliance of participants in the form of norms (permissions, obligations, and prohibitions), e.g.\ \cite{Kyas2008}.
+
+Smart contracts execute agreements on a distributed ledger like Bitcoin or Ethereum \cite{Nakamoto2008,Buterin2013}.
+The consensus protocol of the ledger ensures that the smart contract is executed correctly and only results agreed by a majority are accepted.
+Consensus protocols enable mutually \emph{distrusting parties} to create contracts and interact.
+% Likewise, parties that have a form of \emph{trusted relationship} can utilise smart contracts on a ledger with stronger trust assumptions.
+% This can be beneficial since, e.g. transaction rates can be higher and fees (if any) lower.
+However, there is a caveat with distributed ledgers and their consensus protocols.
+Results of contracts need to be fully deterministic so that each party participating in the consensus protocol reaches the same conclusion with a common set of inputs.
+
+% Smart contracts can be used to encode legal contracts, much like the equivalent electronic contract systems \cite{Neal.2003,Governatori2006,Clack2016}.
+% Yet, smart contracts do not necessarily have to have a ``real-world'' legal contract equivalent \cite{Szabo1997,Nakamoto2008,Buterin2013}. 
+% In the legal context, disputes can be resolved in the traditional legal system of the original contract.
+% Where a smart contract does not have a related legal contract, dispute resolution must be included in the protocol of the contract.
+% If this is not the case, disputes might not be resolved.
+% Projects like Mattereum try to bridge the gap \cite{Gupta}.
+% Nonetheless, in both settings, the contract languages play a crucial role.
+
+\subsection{Languages for contracts}
+
+Smart contracts need a low-level language that allows deterministic execution. 
+A high-level language can make it easier for developers to create new contracts and reason about existing contracts.
+In software development, having different sets of languages is a conventional process.
+Similarly, we can distinguish three different levels of languages for smart contracts.
+
+\begin{itemize}
+\item \emph{High-level languages} should provide a way to express the desired contracts. These languages can have a wide range of possible paradigms including procedural, logic, functional, or object-oriented. Depending on the use case and intended use of the language, the paradigm can be adjusted. Moreover, multiple high-level languages can exist in parallel to be executed on the same ledger. Examples for high-level languages are Solidity \cite{Ethereum2018Solidity} and Liquidity \cite{OCamlProSAS2018}.
+\item \emph{Intermediary representations (IR)} are between low-level and high-level languages. IRs can be used to write programs to reason about properties (like safety or liveness) or optimising code. Examples include Simplicity \cite{OConnor2017} and Scilla \cite{Sergey2018}.
+\item \emph{Low-level languages} need to implement the contract in a deterministic way so that it can be executed on a distributed virtual machine (VM). Examples include Bitcoin Script \cite{BitcoinWiki2018Script} and EVM bytecode \cite{Wood2014}.
+\end{itemize}
+
+Additionally, the \emph{distributed ledger} plays a vital role in the design of the language. Bitcoin and others implement a UTXO model \cite{Nakamoto2008,Covaci2018}, where contracts are restricted to one transaction. Account-based ledgers have a global state and contracts can typically access this state. 
+However, this can introduce security issues when dependencies on the global state are introduced within the contract that can be influenced by parties outside of the contract (typically miners). Other issues revolve around calling into other, possibly faulty or unpredictable, contracts.
+
+% \subsection{Contract verification}
+
+%\subsection{Survey objective}
+%Smart contracts potentially handle large amounts of money.
+%Hence, keeping them safe requires efforts on different levels.
+%We summarise the efforts taken to create safe smart contracts by answering the following research question.
+%
+%\paragraph{\textbf{RQ:}} How can languages and verification methods contribute to safer smart contracts?
+%
+%
+%\paragraph{} In detail, we present relevant previous work according to languages and verification tools.
+%High-level languages can encourage secure programming principles that reduce the number of bugs a programmer introduces.
+%IR and low-level languages can be designed to simplify program analysis and verification.
+%Verification tools can analyse specific properties or full contracts by using representative models or proof methods.
+%% Their impact can be promoted by full coverage and ease of use.
+%Last, verified compilers are a practice to allow reasoning of programs at a higher level and safe execution at a lower level.
+% Design by contract \cite{Meyer1992}
