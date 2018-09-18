@@ -1,20 +1,25 @@
-\begin{table}[h]
+\begin{table}
 \centering
-\caption{My caption}
-\label{my-label}
-\begin{tabularx}{\textwidth}{|X|X|X|X|X|X|X|}
-\hline
-\textbf{Tool} & \rotatebox{60}{\textbf{Approach}} & \rotatebox{60}{\textbf{Automation}} & \rotatebox{60}{\textbf{Languages}} & \rotatebox{60}{\textbf{Source code}} & \rotatebox{60}{\textbf{Completeness}} & \rotatebox{60}{\textbf{References}} \\ \hline
-Securify & model & automated & EVM & closed & full & \cite{Tsankov2017} \\ \hline
-K & model & partly automated & EVM, IELE & open & full & \cite{Rosu2007} \cite{Hildenbrandt2017}\cite{Chen2018}\cite{Park2018} \\ \hline
-Mythril & model & partly automated & EVM with LASER & open & property definitions & \cite{Mueller2018} \\ \hline
-Oyente & model & automated & Solidity and EVM & open & property definitions & \cite{Luu2016}\cite{Albert2018} \\ \hline
-Zeus & model & automated & Solidity; Go, Java (Hyperledger Fabric) & unclear & property definitions & \cite{Kalra2018} \\ \hline
-ECF & model & automated & EVM & open & property definitions & \cite{Grossman2017} \\ \hline
-Maian & model & automated & EVM & open & property definitions & \cite{Nikolic2018} \\ \hline
-Lem & proof & partly automated & EVM & open & full & \cite{Mulligan2014}\cite{Hirai2017}\cite{Amani2018} \\ \hline
-Coq (Scilla and Michelson) & proof & partly automated & Scilla, Michelson & open (Scilla)open (Michelson) & full* & \cite{Sergey2018} \cite{DynamicLedgerSolutions2017} \\ \hline
-F* & proof & partly automated & EVM & open & full* & \cite{Bhargavan2016}\cite{Grishchenko2018} \\ \hline
-\end{tabularx}
+\caption{Overview of model and proof-based verification tools for smart contracts.}
 
+\label{tab:model}
+\begin{tabularx}{\textwidth}{lllllll}
+\toprule
+\textbf{Tool} & \textbf{Approach} & \textbf{Automation} & \textbf{Coverage} & \textbf{Languages} & \textbf{Source} & \textbf{Ref.} \\ \toprule
+\emph{Securify} & model & full & full & EVM & closed & \cite{Tsankov2017} \\
+\emph{Mythril} & model & full & property & EVM & open & \cite{Mueller2018} \\
+\emph{Oyente} & model & full & property & Solidity, EVM & open & \cite{Luu2016,Albert2018} \\
+\emph{ZEUS} & model & full & property & Solidity, Go, Java & closed\textsuperscript{\dag} & \cite{Kalra2018} \\
+\emph{ECF} & model & full & property & EVM & open & \cite{Grossman2017} \\
+\emph{Maian} & model & full & property & EVM & open & \cite{Nikolic2018} \\ \midrule
+\emph{K} & proof & partial & full & EVM, IELE & open & \cite{Hildenbrandt2017,Park2018} \\
+\emph{Lem} & proof & partial & full & EVM & open & \cite{Hirai2017,Amani2018} \\
+\emph{Coq} & proof & partial & partial\textsuperscript{\ddag} & Scilla, Michelson & open & \cite{Sergey2018,DynamicLedgerSolutions2017} \\
+\emph{F*} & proof & partial & partial\textsuperscript{\ddag} & EVM & open & \cite{Bhargavan2016,Grishchenko2018} \\
+\bottomrule
+\end{tabularx}
+\justify
+\textsuperscript{\dag} We were not able to find available source code. \\
+\textsuperscript{\ddag} Theoretically these tools have a full coverage. However, implementation is as of September 2018 not completed.
 \end{table}
+
