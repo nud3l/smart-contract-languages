@@ -8,7 +8,7 @@
 % However, a significant amount of interaction is conducted between untrusted or semi-trusted parties.
 
 \subsection{Contracts and trust}
-
+\dha{Rename to history of smart contracts?}
 Contracts are a requirement resulting from an inherent lack of trust between parties.
 Electronic contracts have been considered as a way to encode legal contracts (e.g. Ricardian contracts \cite{Grigg2004}) in a Domain Specific Language (DSL). 
 They can be processed digitally enabling automated business processes.
@@ -27,6 +27,8 @@ Consensus protocols enable mutually \emph{distrusting parties} to create contrac
 However, there is a caveat with distributed ledgers and their consensus protocols.
 Results of contracts need to be fully deterministic so that each party participating in the consensus protocol reaches the same conclusion with a common set of inputs.
 
+\dha{No unique definition to smart contracts - Ethereum and Bitcoin understanding quite different. Many information is scattered in developments, EIP/BIP, academia.}
+
 % Smart contracts can be used to encode legal contracts, much like the equivalent electronic contract systems \cite{Neal.2003,Governatori2006,Clack2016}.
 % Yet, smart contracts do not necessarily have to have a ``real-world'' legal contract equivalent \cite{Szabo1997,Nakamoto2008,Buterin2013}. 
 % In the legal context, disputes can be resolved in the traditional legal system of the original contract.
@@ -35,21 +37,27 @@ Results of contracts need to be fully deterministic so that each party participa
 % Projects like Mattereum try to bridge the gap \cite{Gupta}.
 % Nonetheless, in both settings, the contract languages play a crucial role.
 
-\subsection{Languages for contracts}
-
+\subsection{Technical overview}
+\dha{Explain the smart contract ``stack''}
 Smart contracts need a low-level language that allows deterministic execution. 
 A high-level language can make it easier for developers to create new contracts and reason about existing contracts.
 In software development, having different sets of languages is a conventional process.
 Similarly, we can distinguish three different levels of languages for smart contracts.
 
-\begin{itemize}
-\item \emph{High-level languages} should provide a way to express the desired contracts. These languages can have a wide range of possible paradigms including procedural, logic, functional, or object-oriented. Depending on the use case and intended use of the language, the paradigm can be adjusted. Moreover, multiple high-level languages can exist in parallel to be executed on the same ledger. Examples for high-level languages are Solidity \cite{Ethereum2018Solidity} and Liquidity \cite{OCamlProSAS2018}.
-\item \emph{Intermediary representations (IR)} are between low-level and high-level languages. IRs can be used to write programs to reason about properties (like safety or liveness) or optimising code. Examples include Simplicity \cite{OConnor2017} and Scilla \cite{Sergey2018}.
-\item \emph{Low-level languages} need to implement the contract in a deterministic way so that it can be executed on a distributed virtual machine (VM). Examples include Bitcoin Script \cite{BitcoinWiki2018Script} and EVM bytecode \cite{Wood2014}.
-\end{itemize}
+\emph{High-level languages} should provide a way to express the desired contracts. These languages can have a wide range of possible paradigms including procedural, logic, functional, or object-oriented. Depending on the use case and intended use of the language, the paradigm can be adjusted. Moreover, multiple high-level languages can exist in parallel to be executed on the same ledger. Examples for high-level languages are Solidity \cite{Ethereum2018Solidity} and Liquidity \cite{OCamlProSAS2018}.
+
+\emph{Intermediary representations (IR)} are between low-level and high-level languages. IRs can be used to write programs to reason about properties (like safety or liveness) or optimising code. Examples include Simplicity \cite{OConnor2017} and Scilla \cite{Sergey2018}.
+
+\emph{Low-level languages} need to implement the contract in a deterministic way so that it can be executed on a distributed virtual machine (VM). Examples include Bitcoin Script \cite{BitcoinWiki2018Script} and EVM bytecode \cite{Wood2014}.
 
 Additionally, the \emph{distributed ledger} plays a vital role in the design of the language. Bitcoin and others implement a UTXO model \cite{Nakamoto2008,Covaci2018}, where contracts are restricted to one transaction. Account-based ledgers have a global state and contracts can typically access this state. 
 However, this can introduce security issues when dependencies on the global state are introduced within the contract that can be influenced by parties outside of the contract (typically miners). Other issues revolve around calling into other, possibly faulty or unpredictable, contracts.
+
+\dha{More detail on the ledger? Bitcoin uses \texttt{scriptSig} and \texttt{scriptPubKey} to determine if a tx can be spent. Generally ledger consists of transactions and scripts, consensus protocol, and network protocol.}
+
+\dha{Explain verification efforts. Combination of smart contracts (the logic to be verified) and the ledger environment (the runtime environment).}
+
+\dha{What about a short review about security issues? Desired properties are safety and liveness.}
 
 % \subsection{Contract verification}
 

@@ -116,7 +116,7 @@ The idea is to create a language that is more expressive than Bitcoin Script but
 In practice, infinite loops and recursion would block any node in the network executing the smart contract. As this is not the desired behaviour, it can be directly restricted by the language. Other languages, however, offer such constructs.
 The EVM and eWASM, on the other hand, strive for Turing-completeness. While there is a discussion of restricting VMs for security reasons, eWASM is supposed to be backwards compatible with the EVM.
 
-\paragraph{Calls}
+\paragraph{Tail-calls}
 Another critical aspect of the instruction set is the possibility of calling other contracts. Executing code in other contracts can potentially introduce unexpected behaviour. Languages that operate according to the FSM or automata principle use \emph{tail-calls}, e.g.\ \cite{Sergey2018}. This principle is also suggested for Solidity \cite{ConsenSys2018Security}.
 
 \begin{lstlisting}[caption={Tail calls implemented in Solidity.},label=lst:tail-call,language=Solidity]
@@ -132,6 +132,11 @@ contract Funding() {
 }
 \end{lstlisting}
 
+\paragraph{Delegatecall}
+
+\paragraph{Fallback functions}
+If a call to an EVM contract fails due to e.g.\ a wrong function signature, the fallback function in the called contract is executed.
+
 \paragraph{Restrict overriding}
 Overriding functions can lead to issues when reviewing code as it may not be clear which code is actually executed. Assume two functions as listed below.
 \begin{lstlisting}[caption={Function overriding with different inputs.},label=lst:tail-call,language=Solidity]
@@ -141,6 +146,9 @@ function transfer(address from, address to, uint amount) public {}
 
 \paragraph{Overflow}
 IELE has been developed with the intention to create a VM that enables formal verification. Arbitrary-precision signed integers are used to prevent overflows.
+
+\paragraph{Stack limit}
+
 
 \paragraph{Code re-use}
 \citeauthor{Pontiveros2018} proposes to re-use EVM code to optimise the space usage of code with a new op-code \cite{Pontiveros2018}. This technique could be applied to reference proven secure code patterns.
@@ -152,14 +160,25 @@ Bamboo, Liquidity, Michelson, and Pact are planned to have a formal semantics on
 Low-level languages have been informally defined. In later work, the EVM has been formally defined in K \cite{Hildenbrandt2017}, Lem \cite{Hirai2017}, and F* \cite{Grishchenko2018}.
 As other languages have been informally defined, the correct interpretation of programs is left to the compiler. Creating a formal semantic for a higher-level language can enable the creation of verified compilers for said language and support verification efforts.
 
-\paragraph{Types}
+\paragraph{Explicit types}
 Flint introduces additional types for assets. Smart contracts typically operate on some form of an asset like fungible or non-fungible tokens. Instead of using existing types, particular asset types can account for the critical handling of assets.
 
+\paragraph{Type casting}
+
+
 \subsection{Metering}
+\paragraph{Out-of-gas}
+
 Most languages inherit their metering mechanism from the underlying VM. The standard practice is to use gas and a gas limit to restrict instructions. Rholang's phlogiston essentially implements the gas concept as well.
 However, Bitcoin script uses a maximum script size of 10,000 bytes as a restriction. Merkelized Abstract Syntax Tree (MAST) is a proposal to allow larger scripts without increasing the script size limit \cite{Harding2017}.
 
 \subsection{Additional security properties:} 
+\paragraph{Contract upgrades}
+
+\paragraph{Randomness}
+
+\paragraph{Secrets}
+
 Apart from the features that a language supports, practices can be applied to prevent the unintended behaviour.
 In \cite{Wohrer2018}, present six patterns to enhance the security of Solidity smart contracts.
 Further, best practice libraries are often used to prevent commonly known issues, e.g.\ \cite{ConsenSys2018Security}.
