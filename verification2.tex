@@ -1,16 +1,16 @@
 \section{Verification methods}
 \label{verification}
 
-Different approaches currently in place are sketched in figure \ref{fig:ver}. 
-(A) represents verification efforts that use as a source of verification directly the low-level code that is or will be deployed on the distributed ledger. Those tools include K/KEVM \cite{Hildenbrandt2017}, Lem (with their possible proofs in Coq or Isabelle/HOL) \cite{Hirai2017}, and F* \cite{Bhargavan2016,Grishchenko2018}.
-Tools listed in (B) use the low-level code and decompile it into an IR to reason about properties in the contracts like Security \cite{Tsankov2017}, Mythril \cite{Mueller2018}, Oyente \cite{Luu2016,Albert2018}, ECF \cite{Grossman2017}, and Maian \cite{Nikolic2018}. ZEUS is an exception as it uses a high-level language to compile an IR and is not verifying properties based on the low-level code \cite{Kalra2018}.
-(C) describes tools that reason directly on the high-level code. Solidity can be annotated with Why3 statements to reason about the correctness of the contract \cite{Reitwiessner2015Why3}. Oyente can be used but will compile code into an IR. Those methods can help to find bugs in contracts, but since they do not operate directly on the low-level code, they rely on verified compilers.
+Verification approaches are outlined in figure \ref{fig:verification}. 
+(A) represents verification efforts that base their analysis on the low-level code that is or will be deployed on the distributed ledger. Those tools include K/KEVM \cite{Hildenbrandt2017}, Lem (with their possible proofs in Coq or Isabelle/HOL) \cite{Hirai2017}, and F* \cite{Bhargavan2016,Grishchenko2018}.
+Tools listed in (B) use the low-level code and decompile it into an IR to reason about properties in the contracts like Securify \cite{Tsankov2017}, Mythril \cite{Mueller2018}, Oyente \cite{Luu2016,Albert2018}, ECF \cite{Grossman2017}, and Maian \cite{Nikolic2018}. ZEUS is an exception as it uses a high-level language to compile an IR and is not verifying properties based on the low-level code \cite{Kalra2018}.
+(C) describes tools that reason directly on the high-level code. Solidity can be annotated with Why3 statements to reason about the correctness of the contract \cite{Reitwiessner2015Why3}. Oyente can be used as well, but will compile code into an IR. Those methods can help to find bugs in contracts, but since they do not operate directly on the low-level code, they rely on verified compilers to infer properties like safety, correctness, or liveness.
 
 
 \begin{figure}
-\label{fig:ver}
+\label{fig:verification}
 \includegraphics[width=\textwidth]{fig/Verification.pdf}
-\caption{Different approaches of verification tools regarding their source for deriving a model or a set of formulas representing the system. Methods listed in \textbf{(A)} directly verify properties from the model or set of formulas from the low-level code. \textbf{(B)} describes tools using an IR from a high-level langauge or from the low-level code to verify the system. Last, \textbf{(C)} describes methods for verifying properties directly from the high-level code.}
+\caption{Different approaches of verification tools regarding their source for deriving a model or a set of formulas representing the system. Methods listed in (A) directly verify properties from the model or set of formulas from the low-level code. (B) describes tools using an IR from a high-level langauge or from the low-level code to verify the system. Last, (C) describes methods for verifying properties directly from the high-level code.}
 \end{figure}
 
 \subsection{Overview}
@@ -36,7 +36,7 @@ Table \ref{tab:model} presents an overview of the tools we have considered for t
 \subsection{Tools}
 Model-based methods mostly arise from the need to check contracts for known vulnerabilities. After the DAO and Parity vulnerabilities were known, tools were developed to find similar patterns in other contracts. The proof-based methods arise from the need to proof contracts secure. This requires a formal semantics of the VM and the low-level language. Overall, these methods are used to prevent future vulnerabilities but depend on an exact definition of properties and rigorous formal semantics.
 
-\paragraph{Model-based}
+\subsubsection{Model-based}
 Securify is a domain-specific model checker for smart contracts \cite{Tsankov2017}. It compiles EVM bytecode to semantics facts and then uses Datalog to define compliance and violation properties to verify the semantic facts. It classifies behaviours of a contract in compliance (matched by compliance properties), violations (matched by violation properties) and warnings (matched by neither). 
 Mythril is a symbolic execution of EVM bytecode \cite{Mueller2018}. EVM bytecode is disassembled into a Mythril object, and propositional logic is used to reason about the state space represented as a graph. 
 % It is based on the IR LASER \cite{Mueller2018LASER}.
@@ -47,7 +47,7 @@ Effectively Callback Free (ECF) objects are a property that is analysed for Ethe
 Maian works by symbolic execution of a model of EVM bytecode contracts to find trace vulnerabilities \cite{Nikolic2018}. These vulnerabilities include contracts that leak Ether to unintended parties, can be killed by arbitrary users or lock Ether that cannot be received. 
 %They apply their method to verify these properties in real-world contracts.
 
-\paragraph{Proof-based}
+\subsubsection{Proof-based}
 K is a general purpose framework for defining programming languages \cite{Rosu2007}. It is used to build a K representation of the EVM, called KEVM \cite{Hildenbrandt2017}. 
 %This VM has been successfully tested against the official test-set of the Ethereum Foundation for any new EVM implementation. 
 %Contracts like ERC20 can be specified in K as well \cite{Park2018}. 
@@ -62,11 +62,18 @@ Further, a complete small-step semantics of the EVM semantics is presented in \c
 \subsection{Automation} 
 Model-based tools are automated. They usually use an SMT solver (e.g. Z3) to explore the fulfilment of violation of properties. Automation offers a significant advantage as the pre-defined properties in the tool can easily be verified on other contracts. Moreover, Securify, Oyente, and Mythril are available as a web-service. This allows developers to check their contracts without the need to install dependencies for model checking locally.
 
-Proof-based tools are partially automated. The Lem, K, F* semantics are concentrating on creating the distributed VM that executes the smart contracts. Automation can be reached by defining properties contracts should fulfil. This is partly done by the ERC20 efforts in K and the Deed contract in Isabelle/HOL. However, it is desirable to define the functionality of a contract and then verify its correctness rather than finding selected vulnerabilities. The verification of the properties is then done using an SMT solver (in K) or using an interactive theorem prover (Lem, Coq, F*).
+Proof-based tools are partially automated. The Lem, K, F* semantics are focussing on creating the distributed VM that executes the smart contracts. Automation can be reached by defining properties contracts should fulfil. This is partly done by the ERC20 efforts in K and the Deed contract in Isabelle/HOL. However, it is desirable to define the functionality of a contract and then verify its safety, correctness, and liveness rather than finding selected vulnerabilities. The verification of the properties is then done using an SMT solver (in K) or using an interactive theorem prover (Isabelle/HOL, Coq, F*).
 
-\subsection{Coverage} Most model-based tools verify selected properties. In \cite{Atzei2017} and \cite{Luu2016}, the authors offer a classification of possible vulnerabilities. These vulnerabilities build the basis for the properties to check as the tools try to identify violations or conformance of those patterns to flag a contract as vulnerable. Further work tries to build a semantic definition of security based on those vulnerabilities \cite{Grishchenko2018}. The presented tools flag contracts as vulnerable that match properties. Securify additionally gives a warning if none of its conformance or violation patterns matches. However, other tools do not indicate such warnings. Hence, contracts might still be vulnerable even if no properties were triggered (i.e.\ false negative).
+\subsection{Coverage} Most model-based tools verify selected properties. In \cite{Atzei2017} and \cite{Luu2016}, the authors offer a classification of possible vulnerabilities. These vulnerabilities build the basis for the properties to check as the tools try to identify violations or conformance of those patterns to flag a contract as vulnerable
+Model-based rely on detecting these properties by static analysis. 
+Oyente and Mythril are shown to miss vulnerable patters (false negative) and flag safe contracts as vulnerable (false positive) \cite{Tsankov2017}.
+To prevent this, Securify additionally gives a warning if none of its conformance or violation patterns matches.
 
-The desired coverage of proof-based methods is the full contract. By giving a formal specification of the contract functionalities, a contract can be deemed correct. This approach is beneficial for common standards (e.g. ERC20 or ERC721). Selected properties might still be defined instead of the full contract. This approach can also have short-comings as a formally verified contract might contain bugs due to incomplete or inaccuracies in the specification or VM semantics \cite{Hirai2016}.
+The desired coverage of proof-based methods is the full contract. 
+General smart contract security semantics are formally defined in \cite{Grishchenko2018}. The build a basis for the F* small-step semantics and can be adopted to other general proof-based techniques as well.
+However, the security semantics presented are not complete.
+Additional, contract specific, properties need to be defined to ensure correctness of the program.
+By giving a formal specification of the contract functionalities, a contract can be deemed correct. This approach is beneficial for common standards (e.g. ERC20 or ERC721). A short-coming of proof-based verification is that a verified contract might contain bugs due to incomplete or inaccuracies in the specification or VM semantics \cite{Hirai2016}.
 
 \subsection{Languages} 
 %Ethereum is the most popular platform for finding such vulnerabilities. 
@@ -80,4 +87,4 @@ The F* implementation is partially complete. While the EVM semantic is defined a
 \subsection{Source} 
 All tools have a description in a paper or technical report that gives details about their internals. They offer extensions by creating new properties for verification. Except for Securify and ZEUS, tools can be cloned locally, and additional properties can be added.
 
-The K framework has quite extensive documentation and examples available, followed by the work on Lem and Isabelle/HOL. The Coq and F* methods are somewhat new, and documentation is sparse. Also, the semantics are incomplete making those tools not yet practical to use for smart contract verification.
+The K framework has quite extensive documentation and examples available, followed by the work on Lem and Isabelle/HOL. The Coq and F* methods have been introduced this year, and documentation is yet sparse. Also, the implemented semantics are incomplete making those tools not yet practical to use for smart contract verification.
