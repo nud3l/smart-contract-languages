@@ -9,9 +9,10 @@ Moreover, the code should be as explicit as possible by preventing function over
 Intermediary languages are developed with formal verification and optimisations in mind.
 This is an attempt to bring best practices from software engineering and language theory to distributed ledgers.
 Low-level languages are built to allow formal verification and at the same time give a run-time optimised execution on a distributed ledger.
+Combining those practices and applying them in the development cycle helps create secure smart contracts.
 
 \subsubsection{Verification}
-Verification efforts include categorising and defining security properties for smart contracts, developing model-based tools to verify that contracts are not vulnerable to known bugs, and formal semantics with the intention to prove compliance of a contract implementation to an abstract specification.
+Verification efforts include categorising and defining security properties for smart contracts, developing model-based tools to verify that contracts are not vulnerable to known bugs, and formal semantics with the intention to prove compliance of a contract implementation to an abstract specification. Proof-based verification requires more effort than model checking for existing vulnerabilities. Hence, verification is sensible for high-value and critical contracts. In fact, the Casper contract is currently being formally verified.
 
 %\subsection{Related work}
 %\citeauthor{Seijas2017} survey smart contracts for distributed ledger with a focus on Bitcoin, Ethereum, and Nxt \cite{Seijas2017}.
@@ -33,8 +34,8 @@ Verification efforts include categorising and defining security properties for s
 %By applying both methods, the authors validate a protocol build on a smart contract. In that case, external factors like the users are considered explicitly as players in a game.
 
 \subsubsection{Formal semantics and verified compilers}
-A main focus is currently on developing IR with formal semantics and creating formal semantics for existing low-level languages. We argue that in the future, more projects need to adopt formal semantics on all language levels to promote verification efforts and prevent ambiguities in compiler implementations. Further, this allows to create verified compilers making it easier to argue about contracts in a high-level language \cite{Hirai2017}. 
-Next, formal semantics for the EVM combine the VM and the ledger. Future work is to separate the semantics for the ledger and the execution environment. 
+A main focus is developing IRs with formal semantics and creating formal semantics for existing low-level languages. We argue that in the future, more projects need to adopt formal semantics on all language levels to promote verification efforts and prevent ambiguities in compiler implementations. Further, this allows to create verified compilers making it easier to argue about contracts in a high-level language \cite{Hirai2017}. 
+Next, current formal semantics for the EVM combine the VM and the ledger in a single definition. Future work is to separate the semantics for the ledger and the execution environment. 
 
 \subsubsection{Complete security definitions}
 An initial proposal of formal security definitions is made in \cite{Grishchenko2018}. Those definitions are taken from the perspective of Solidity and the EVM. Hence, more general security definitions for various execution environments are required. Also, it could be interesting to separate the execution environment from the ledger. Moreover, proposed standards like the ERC20 can be formally defined as part of the proposal process. This would allow to verify implementations against a formal specification. Possibly, automated formal verification methods can be built on this.
