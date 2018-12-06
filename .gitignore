@@ -7,3 +7,5 @@ main.pdf
 *.gz
 build/*
 drafts/*
+submission/*
+session.tks
