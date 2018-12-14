@@ -19,7 +19,12 @@
 %}
 
 
+
 \usepackage[backend=biber,style=numeric,citestyle=ieee,doi=false,isbn=false,arxiv=false]{biblatex}
+
+\usepackage{url}
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
 
 \AtEveryBibitem{\clearfield{publisher}}
 \AtEveryBibitem{\clearfield{editor}}
