@@ -1,20 +1,22 @@
 \section{Introduction}
 %The idea of contracts between independent parties goes back to autonomous agents using a network of agents to solve tasks distributed and based on individual contracts as presented in the contract net protocol ~\cite{Smith1980}.
-Smart contracts enabled a new generation of decentralised applications.
-Individuals and companies alike invested massively in Initial Coin Offerings (ICOs).
-Further, digital collectibles, autonomous organisations, gambling platforms, and decentralisations exchanges were created augmented by smart contracts.
-The objective of smart contracts is to minimise the need for trust in peer to peer interactions~\cite{Szabo1997}.
+Smart contracts enable a new generation of decentralised applications.
+%Individuals and companies alike invested massively in Initial Coin Offerings (ICOs).
+Digital collectibles, autonomous organisations, token funding contracts, gambling platforms, and decentralisations exchanges are created augmented by smart contracts.
+Their success is accountable to a transfer of trust away from individual parties towards the enforced contract logic by a consensus protocol.
+Hence, the objective of smart contracts is to minimise the need for trust in peer to peer interactions~\cite{Szabo1997}.
 %Smart contracts are programs executed on a blockchain.
 The state change of a smart contract is agreed upon by the participants of the consensus protocol of the underlying blockchain.
 Thus, their outcome does not rely on a single trusted party but rather on the assumption that a majority or super-majority of consensus participants behaves honest~\cite{Nakamoto2008,Eyal2014}.
 % Significant work focused on creating languages and frameworks for electronic contracts even before the inception of distributed ledgers, for example,~\cite{Andersen2006,Kyas2008,Xu2004}.
 % However, distributed ledgers are the ones facilitating the wide-spread adoption of electronic contracts.
 
-Smart contracts combine two unique properties: anyone can create and publish such contracts, while each line of code might affect a significant amount of money.
+Smart contracts combine two unique properties. 
+First, anyone can create and publish smart contracts in an open peer to peer system and, second, smart contracts can interact with and manage large amounts of assets.
 Contracts are concerned with a range of use cases, including financial services, notaries, games, wallets, or libraries~\cite{Bartoletti2017}.
 Further, smart contracts are the enabler of protocols build on top of distributed ledgers, for example, Lightning~\cite{Poon2016}, Plasma~\cite{Poon2017}, Polkadot~\cite{Wood2017}, and TrueBit~\cite{Teutsch2017}.
 However, security incidents caused by software bugs have lead to severe losses as in the infamous The DAO incident~\cite{Daian2016}, and Parity multi-sig vulnerabilities~\cite{Breidenbach2017Parity,ParityTech2017}. 
-\dha{Include SpankChain example. Maybe also include ERC20 failed to return a value example.}
+%\dha{Include SpankChain example. Maybe also include ERC20 failed to return a value example.}
 
 Substantial efforts are taken to prevent future incidents. 
 High-level programming languages are introduced to encourage safe programming practices, for example ~\cite{Hirai2018Bamboo,Ethereum2018Vyper,Schrans2018}.
@@ -25,6 +27,6 @@ Tools for analysing source code by symbolic modelling and execution, for example
 We give a brief technical overview of smart contracts and general security properties in Section~\ref{background}. Due to the practical impact of these approaches to real-world smart contracts, we present a literature survey on current languages and verification efforts.
 We contribute an overview of contract language security features including paradigm, instruction set, semantic, and metering in Section~\ref{languages}.
 Further, we describe different efforts to verify software including model- and proof-based methods in Section~\ref{verification}. Our overview includes an analysis of the level of automation, coverage, and supported languages.
-Last, we introduce directions for future research in the area of smart contracts languages and verification in Section~\ref{discuss}.
+Last, we introduce directions for future research in Section~\ref{discuss}.
 
 %\subsubsection{Structure} The remainder of our article is structured as follows. Section \ref{background} introduces the background of contracts and languages to express them. We present an overview and a classification of languages in section \ref{languages}. Similarly, verification approaches are examined in section \ref{verification}. Results and future work is discussed in section \ref{discuss}. We conclude in section \ref{conclusion}.
