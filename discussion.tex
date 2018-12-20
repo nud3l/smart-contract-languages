@@ -2,21 +2,21 @@
 \label{discuss}
 
 \subsubsection{Compositional specifications}
-Current work in specifications focusses on proofing correctness \emph{w.r.t.} to a specification of an entire system or protocol~\cite{Palmskog2018,Pirlea2018}.
+Current work in specifications focusses on proofing correctness \emph{w.r.t.} to a specification of an entire system or protocol, e.g.~\cite{Palmskog2018,Pirlea2018}.
 However, protocols are often composed of multiple parts, with program logic implemented in several smart contracts and components deployed outside a blockchain.
 Future research can focus on two aspects of compositional verification.
 First, smart contracts can be verified with built-in defensive programming to handle untrusted code interacting with the contract~\cite{Miller2018smart}.
-This allows to verify runtime correctness and exception handling of potentially malicious external contract calls.
-Second, semantics and models of blockchain systems are largely monolithic.
+Defensive programming allows verifying runtime correctness and exception handling of potentially malicious external contract calls.
+Second, semantics and models of blockchain systems are primarily monolithic.
 Similar to the distinction introduced by \citeauthor{Bonneau2015}~\cite{Bonneau2015}, specifications can focus on separating network, consensus protocol, execution environment, and contract logic.
 Verified components can be reused, allowing systems to be modelled and verified more easily.
 
 \subsubsection{Holistic specification}
 Formal specifications focusses on verifying properties of individual functions in smart contracts~\cite{Hildenbrandt2017}.
-For example, the existing ERC20 formal verifications focus on the correct execution of functions defined in the standard.
-However, a malicious creator of an ERC20 contract could define additional functions to e.g.\ increase the token balance of individual address or withdraw funds from the contract.
+For example, the existing ERC20 formal verification covers the correct execution of functions defined in the standard.
+However, a malicious creator of an ERC20 contract could define additional functions to, e.g.\ increase the token balance of individual address or withdraw funds from the contract.
 A user of such contract could hardly detect such functions without the high-level language source code.
-Even worse, assuming functions have been implemented correctly and free of vulnerabilities, neither formal verification nor model checking would flag the contract as incorrect.
+Even worse, assuming functions are implemented correctly and free of vulnerabilities, neither formal verification nor model checking would flag the contract as incorrect.
 Holistic conditions can be created over any function of the contract based on the state variables and accessors to such variables.
 % This can be used to verify that the contract does not contain malicious functions.
 Model checkers or formal verification tools could then determine that (i) the intended functions can update specific state variables correctly and (ii) the absence of any other function that change state variables (e.g.\ balances or total supply of tokens).
@@ -31,7 +31,7 @@ We imagine that a general specification language for smart contracts could help 
 Such a language can abstract away some of the underlying complexities of the different blockchains while providing a suitable semantic foundation, for example~\cite{Sergey2018a,Sergey2017}.
 
 %\subsubsection{Verification}
-%Verification efforts include categorising and defining security properties for smart contracts, developing model-based tools to verify that contracts are not vulnerable to known bugs, and formal semantics with the intention to prove compliance of a contract implementation to an abstract specification. Proof-based verification requires more effort than model checking for existing vulnerabilities. Hence, verification is sensible for high-value and critical contracts. In fact, the Casper contract is currently being formally verified.
+%Verification efforts include categorising and defining security properties for smart contracts, developing model-based tools to verify that contracts are not vulnerable to known bugs, and formal semantics with the intention to prove compliance of a contract implementation to an abstract specification. Proof-based verification requires more effort than model checking for existing vulnerabilities. Hence, verification is sensible for high-value and critical contracts. The Casper contract is currently being formally verified.
 
 %\subsection{Related work}
 %\citeauthor{Seijas2017} survey smart contracts for distributed ledger with a focus on Bitcoin, Ethereum, and Nxt \cite{Seijas2017}.
@@ -53,27 +53,26 @@ Such a language can abstract away some of the underlying complexities of the dif
 %By applying both methods, the authors validate a protocol build on a smart contract. In that case, external factors like the users are considered explicitly as players in a game.
 %
 %\subsubsection{Formal semantics and verified compilers}
-%A main focus is developing IRs with formal semantics and creating formal semantics for existing low-level languages. We argue that in the future, more projects need to adopt formal semantics on all language levels to promote verification efforts and prevent ambiguities in compiler implementations. Further, this allows to create verified compilers making it easier to argue about contracts in a high-level language \cite{Hirai2017}. 
+% The main focus is on developing IRs with formal semantics and creating formal semantics for existing low-level languages. We argue that in the future, more projects need to adopt formal semantics on all language levels to promote verification efforts and prevent ambiguities in compiler implementations. Further, this allows creating verified compilers making it easier to argue about contracts in a high-level language \cite{Hirai2017}. 
 %Next, current formal semantics for the EVM combine the VM and the ledger in a single definition. 
 %Future work is to separate the semantics for the ledger and the execution environment. 
 
 %\subsubsection{Complete security definitions}
-%An initial proposal of formal security definitions is made in \cite{Grishchenko2018}. Those definitions are taken from the perspective of Solidity and the EVM. Hence, more general security definitions for various execution environments are required. Also, it could be interesting to separate the execution environment from the ledger. Moreover, proposed standards like the ERC20 can be formally defined as part of the proposal process. This would allow to verify implementations against a formal specification.
+%An initial proposal of formal security definitions is made in \cite{Grishchenko2018}. Those definitions are taken from the perspective of Solidity and the EVM. Hence, more general security definitions for various execution environments are required. Also, it could be interesting to separate the execution environment from the ledger. Moreover, proposed standards like the ERC20 can be formally defined as part of the proposal process. This would allow verifying implementations against a formal specification.
 
 \subsubsection{Automated verification}
-During the creation of a smart contract, code can be annotated or contain explicit statements ensuring runtime correctness.
+During the creation of a smart contract, the code can be annotated or contain explicit statements ensuring runtime correctness.
 For example, Solidity from version 5.0.0 offers the conditional statements \texttt{require} and \texttt{assert}.
 These conditions are verified during compile time using symbolic execution with SMT-solvers such as Z3 and CVC4~\cite{Alt2018}.
 We imagine that other smart contract language compilers could use a similar approach to verify code at compile time.
 Smart contract languages can include standardised patterns to declare pre- and postconditions.
-Also, the language compilers  can be designed to require developers to explicitly formulate conditions as part of the contract.
-This can be further extended by verifying properties executed over multiple transactions with state updates.
+Also, the language compilers can be designed to require developers to formulate conditions as part of the contract explicitly.
 
 \subsubsection{Proof-carrying code}
 The majority of blockchain systems reaches consensus over a state update $S \rightarrow S'$ by replicating the state transition function executed as part of the transaction. 
 As an alternative, proof-carrying smart contracts require provable fulfilment of a specification $\Phi$ on a state transition. 
 This has two advantages: First, a state transition can be proven and verified by publishing and subsequently verifying an ideally succinct proof. 
-Second, by publishing a specification $\Phi$ of a contract, the contract implementation can be updated in a verifiable manner.
+Second, by publishing a specification $\Phi$ of a contract, the contract implementation can be updated verifiably.
 When an update of the code (i.e.\ resolving a bug or optimising resource usage) is available, the code can be updated by checking if the update is satisfying $\Phi$.
 An example of this approach for ERC20 contracts is introduced in~\cite{Dickerson2018}.
 Similarly, ZEXE proposes to use succinct proofs over smart contract transition functions~\cite{Bowe2018}.
@@ -83,7 +82,7 @@ Further, a comparative analysis of different cryptographic schemes (e.g.\ zk-SNA
 
 
 \subsubsection{Economic properties}
-A core ability of smart contracts is implementing cryptoeconomic protocols.
+A core ability of smart contracts is implementing crypto economic protocols.
 Hence, they encode incentive mechanisms that provide incentives to honest parties and penalises misbehaviour.
 Formal methods and their tools for smart contracts focus on verifying properties \emph{w.r.t.} safety and liveness.
 Future model checkers can be developed to verify the incentive structures of smart contracts.

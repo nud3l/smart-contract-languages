@@ -2,11 +2,11 @@
 \label{verification}
 
 Verification approaches are outlined in figure \ref{fig:verification}. 
-(A) represents verification efforts that base their analysis on an implementation of the underlying distributed execution environment~\cite{Hildenbrandt2017,Hirai2017,Bhargavan2016,Grishchenko2018}.
+(A) represents verification efforts that base their analysis on the implementation of the underlying distributed execution environment~\cite{Hildenbrandt2017,Hirai2017,Bhargavan2016,Grishchenko2018}.
 Tools listed in (B) are based on an interpretation of the low-level code for reasoning about properties in the contracts~\cite{Tsankov2017,Mueller2018,Luu2016,Albert2018,Grossman2017,Nikolic2018}. 
 %ZEUS is an exception as it uses a high-level language to compile an IR and is not verifying properties based on the low-level code~\cite{Kalra2018}.
 (C) describes tools are implemented directly on the high-level code~\cite{Reitwiessner2015Why3,Alt2018}. 
-%Solidity can be annotated with Why3 statements to reason about the correctness of the contract~\cite{Reitwiessner2015Why3}. %Oyente can be used as well, but will compile code into a Control Flow Graph (CFG). 
+%Solidity can be annotated with Why3 statements to reason about the correctness of the contract~\cite{Reitwiessner2015Why3}. %Oyente can be used as presented well but will compile code into a Control Flow Graph (CFG). 
 %Those methods can help to find bugs in contracts, but since they do not operate directly on the low-level code, they rely on verified compilers to infer properties like safety or liveness.
 
 
@@ -21,13 +21,13 @@ Tools listed in (B) are based on an interpretation of the low-level code for rea
 Table \ref{tab:model} presents an overview of the tools we have considered for this survey.
 Verification efforts can be characterised by five criteria~\cite[173]{Huth2004}. From these, we adopt three and fixate the other two. 
 The application domain concerns smart contracts on a deterministic distributed ledger.
-On these ledgers smart contracts are \emph{immutable}, hence, verification before deployment is desirable. 
+On these ledgers smart contracts are \emph{immutable}. Hence, verification before deployment is desirable. 
 %Otherwise, they can only be used to find existing bugs and requires significant efforts to update the contract.
 Additionally, we included the language that is covered by the specific tool as well as the availability of source code.
 %This leaves us with the following criteria.
 
 \begin{itemize}
-\item \emph{Approach}: In proof-based verification, the system is represented by a set of formulas, while in model-based verification the system is a model. Properties are represented as formulas. The goal is to either proof (proof-based) or to compute whether a model (model-based) satisfies these properties. Proof-based methods typically derive a formal definition of the distributed VM and then try to verify properties of a smart contract. Model-based methods build a model directly from the smart contract and verify the properties with an implicit model of the VM.
+\item \emph{Approach}: In proof-based verification, the system is represented by a set of formulas, while in model-based verification the system is a model. Properties are represented as formulas. The goal is to either proof (proof-based) or to compute whether a model (model-based) satisfies these properties. Proof-based methods typically derive a formal definition of the distributed VM and then try to verify the properties of a smart contract. Model-based methods build a model directly from the smart contract and verify the properties with an implicit model of the VM.
 \item \emph{Automation}: Fully automated approaches have a set of properties and automatically build a model for the system based on an input (like the source code). Partial automation typically requires defining properties or using a proof-assistant (e.g. Coq or Isabelle/HOL) to define and check proofs.
 \item \emph{Coverage}: Property-based verification is concerned with selected parts of the system, while full covers the system as a whole.
 \item \emph{Languages}: Lists the languages that are currently, as of September 2018, supported by the methods. Some of the general tools like Lem, F*, $\mathbb{K}$, and Coq can be used for any languages.
@@ -38,7 +38,7 @@ Additionally, we included the language that is covered by the specific tool as w
 
 
 \subsection{Tools}
-Model-based methods arise from the need to check contracts for known vulnerabilities. After the DAO and Parity vulnerabilities were known, tools were developed to find similar patterns in other contracts. The proof-based methods arise from the need to proof contracts secure. This requires a formal semantics of the VM and the low-level language. Overall, these methods are used to prevent future vulnerabilities but depend on an exact definition of properties and rigorous formal semantics.
+Model-based methods arise from the need to check contracts for known vulnerabilities. After the DAO and Parity vulnerabilities were known, tools were developed to find similar patterns in other contracts. The proof-based methods arise from the need to proof contracts secure. Proof-based methods require formal semantics of the VM and the low-level language. Overall, these methods are used to prevent future vulnerabilities but depend on an exact definition of properties and rigorous formal semantics.
 
 \subsubsection{Model-based}
 Securify is a domain-specific model checker for smart contracts~\cite{Tsankov2017}. It compiles EVM bytecode to semantics facts and then uses a dialect of Datalog to define compliance and violation properties to verify the semantic facts. It classifies behaviours of a contract in compliance (matched by compliance properties), violations (matched by violation properties), and warnings (matched by neither). 
@@ -66,7 +66,7 @@ Further, a complete small-step semantics of the EVM semantics is presented in~\c
 
 \subsection{Automation} 
 \subsubsection{Full automation}
-Model-based tools are automated. They usually use an SMT solver (e.g. Z3) to explore the fulfilment of violation of properties. Automation offers a significant advantage as the pre-defined properties in the tool can easily be verified on other contracts. Moreover, Securify, Oyente, and Mythril are available as a web-service. This allows developers to check their contracts without the need to install dependencies for model checking locally.
+Model-based tools are automated. They usually use an SMT solver (e.g. Z3) to explore the fulfilment of violation of properties. Automation offers a significant advantage as the pre-defined properties in the tool can easily be verified on other contracts. Moreover, Securify, Oyente, and Mythril are available as a web-service. Web-services allow developers to check their contracts without the need to install dependencies for model checking locally.
 
 \subsubsection{Partial automation}
 Proof-based tools are partially automated. The Lem, $\mathbb{K}$, F* semantics are focussing on creating the distributed VM that executes the smart contracts. Automation can be reached by defining properties contracts should fulfil. This is partly done by the ERC20 efforts in $\mathbb{K}$ and the ``Deed'' contract in Isabelle/HOL. However, it is desirable to define the functionality of a contract and then verify its safety, correctness, and liveness rather than finding selected vulnerabilities. The verification of the properties is then done using an SMT solver (in $\mathbb{K}$) or using an interactive theorem prover (Isabelle/HOL, Coq, F*).
@@ -80,8 +80,8 @@ Oyente and Mythril are shown to miss vulnerable patterns (false negative) and fl
 \subsubsection{Full verification}
 Securify gives a warning if none of its conformance or violation patterns matches.
 The desired coverage of proof-based methods is the full contract. 
-General smart contract security semantics are formally defined in~\cite{Grishchenko2018}. They build a basis for the F* small-step semantics and can be adopted to other general proof-based techniques as well.
-However, the security semantics presented are not complete.
+General smart contract security semantics are formally defined in~\cite{Grishchenko2018}. They build a basis for the F* small-step semantics and can be adapted to other general proof-based techniques as well.
+However, the security semantics  are not complete.
 Additional, contract specific properties need to be defined to ensure correctness of the program.
 By giving a formal specification of the contract functionalities, a contract can be deemed correct. This approach is beneficial for common standards (e.g. ERC20 or ERC721). 
 A short-coming of proof-based verification is that a verified contract might still contain bugs after verification (i.e.\ false-negative). 
@@ -92,7 +92,7 @@ This can be caused by incomplete or inaccurate semantics as well as inaccurate o
 %Notably, other languages like Bitcoin Script seem to be quite restrictive leading to less of a need to automatically verify security properties. 
 \subsubsection{EVM}
 The majority of the tools use the EVM bytecode to derive a model of the contract. Moreover, most models do not implement all EVM opcodes. Hence, vulnerabilities might remain undetected as not all contracts can be fully verified.
-Major work efforts are taken in building a formal semantics of the EVM ($\mathbb{K}$, Lem, F*). 
+Significant work efforts focus on building a formal semantics of the EVM ($\mathbb{K}$, Lem, F*). 
 %K and Lem are complete and derived implementations have been tested against the EVM test suite corpus. 
 The F* implementation is partially complete. 
 

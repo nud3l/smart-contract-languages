@@ -21,7 +21,7 @@
 %\subsubsection{Smart contracts}
 Smart contracts execute agreements on a distributed ledger. %like Bitcoin or Ethereum~\cite{Nakamoto2008,Buterin2013}.
 %The ledger's consensus protocol ensures correct execution of the smart contract, whereby a majority or super-majority agrees on the accepted result.
-%Consensus protocols enable mutually \emph{distrusting parties} to create contracts and interact.
+%Consensus protocols enable \emph{distrusting parties} to create contracts and interact.
 However, no single definition of a smart contract exists.
 Information and definitions are scattered in academia and various communities (e.g.\ Bitcoin and Ethereum Improvement Proposals).
 Further, the capabilities of smart contracts range from minimal (e.g.\ Bitcoin) to restrictive (e.g.\ Scilla~\cite{Sergey2018}) to Turing-complete instruction sets (e.g.\ Ethereum). 
@@ -32,7 +32,7 @@ We provide a brief overview of the technical components of a smart contract and 
 %Moreover, there is a caveat with distributed ledgers and consensus protocols.
 %Results of contracts need to be fully deterministic so that each (honest) actor in the consensus protocol reaches a single common output with the same set of inputs.
 
-%\dha{No unique definition to smart contracts - Ethereum and Bitcoin understanding quite different. Many information is scattered in developments, EIP/BIP, academia.}
+%\dha{No unique definition to smart contracts - Ethereum and Bitcoin understanding entirely different. Many information is scattered in developments, EIP/BIP, academia.}
 
 % Smart contracts can be used to encode legal contracts, much like the equivalent electronic contract systems~\cite{Neal.2003,Governatori2006,Clack2016}.
 % Yet, smart contracts do not necessarily have to have a ``real-world'' legal contract equivalent~\cite{Szabo1997,Nakamoto2008,Buterin2013}. 
@@ -48,7 +48,7 @@ We provide a brief overview of the technical components of a smart contract and 
 %A high-level language can make it easier for developers to create new contracts and reason about existing contracts.
 %In software development, having different sets of languages is a conventional process.
 The purpose of the distributed ledger plays a vital role in the design of the language and execution environment.
-Languages and execution environments that are permissive in nature can be used to implement a wide range of applications. 
+Languages and execution environments that are permissive can be used to implement a wide range of applications. 
 Contrarily, special purpose ledgers can restrict language and execution features to provide strong security guarantees.
 
 \subsubsection{Distributed ledger}
@@ -56,7 +56,7 @@ We can distinguish between two different ways of storing contracts in distribute
 Bitcoin is an example for a UTXO model~\cite{Nakamoto2008,Covaci2018}, where contracts are stored as part of a transaction. %in the \texttt{scriptSig} and \texttt{scriptPubKey} of a transaction. 
 Hence, contracts implement conditions of a single transaction or need to be ``chained'' over multiple ones.
 Account-based ledgers store contracts at a specific address.
-Contracts have a local state and their functions can be called multiple times.
+Contracts have a local state, and their functions can be called multiple times.
 State-changing functions are invoked by sending a transaction to a contract function exposed via its Application Binary Interface (ABI)~\cite{Wood2014,Sergey2018,OCamlProSAS2018}.
 Contracts can typically access a global state to receive information stored in the ledger such as block timestamps, block hashes, or transaction data. 
 
@@ -69,7 +69,7 @@ Low-level languages need to implement the contract in a deterministic way to be 
 
 % However, this can introduce security issues when dependencies on the global state are introduced within the contract that can be influenced by parties outside of the contract (typically miners). Other issues revolve around calling into other, possibly faulty or unpredictable, contracts.
 
-%\dha{More detail on the ledger? Bitcoin uses  to determine if a tx can be spent. Generally, ledger consists of transactions and scripts, consensus protocol, and network protocol.}
+%\dha{More detail on the ledger? Bitcoin uses to determine if a tx can be spent. Generally, ledger consists of transactions and scripts, consensus protocol, and network protocol.}
 
 %\dha{Explain verification efforts. Combination of smart contracts (the logic to be verified) and the ledger environment (the runtime environment).}
 
@@ -78,7 +78,7 @@ Desired properties of smart contracts include safety and liveness~\cite{Sergey20
 Safety refers to satisfying specific correctness properties during any state of a contract.
 Liveness describes that certain events may eventually occur.
 Analysis of vulnerabilities violating security properties with a focus on the EVM is presented in~\cite{Luu2016} and~\cite{Atzei2017}.
-\citeauthor{Grishchenko2018} extend this work by introducing a formal definition of general security properties for smart contracts with a focus on account-based distributed ledgers~\cite{Grishchenko2018}. We note that the listed security properties might already be fulfilled due the restrictions imposed by the ledger. For example, Bitcoin scripts are atomic by design.
+\citeauthor{Grishchenko2018} extend this work by introducing a formal definition of general security properties for smart contracts with a focus on account-based distributed ledgers~\cite{Grishchenko2018}. We note that the listed security properties might already be fulfilled due to the restrictions imposed by the ledger. For example, Bitcoin scripts are atomic by design.
 
 \subsubsection{Call integrity}
 A contracts state may depend on an external call. Specifically, a contract can (i) execute code of an external contract within its functions, (ii) call another contract's function and wait for its returned value, or (iii) call another contract that changes the global state or re-enters the calling contract.
@@ -87,13 +87,13 @@ The contract control flow should not be influenced by an adversary contract.
 \subsubsection{Atomicity}
 Functions should be executed entirely or the state should be reverted, except when specifically allowed during exception handling.
 Contracts might execute only a part of the transaction due to calls to other contracts during function execution, stack limits, or enforced stops due to metering limitations.
-This updates the state partially and might leave the contract open to malicious acts.
+Partial function execution might leave the contract open to malicious acts.
 
 \subsubsection{Independence}
 Transactions change the state of a contract. Miners and other parties can control or influence parameters in contracts or transactions. For example, a contract might use a timestamp-dependent function, which can in certain ranges be influenced by miners. Also, the ordering of transactions can be influenced by miners or others paying higher fees. Hence, contracts should ideally be independent of the global state or parameters that can be influenced externally.
 
 \subsubsection{Runtime correctness}
-The aforementioned properties apply to general contracts. However, each contract serves a distinct purpose. Properties particular to the expected behaviour of a contract need to be defined to ensure the runtime correctness of the contract.
+The properties above apply to general contracts. However, each contract serves a distinct purpose. Properties particular to the expected behaviour of a contract need to be defined to ensure the runtime correctness of the contract.
 
 %\subsection{Formalisation}
 %$\Phi$ specification
