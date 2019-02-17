@@ -85,7 +85,7 @@ Further, privacy of smart contracts is a concern~\cite{Kosba2015,Bowe2018,Covaci
 Last, smart contracts can have deadlocks due to metering restrictions and bugs in the implementation~\cite{Grech2018}.
 Hence, we add a liveness property as well.
 We note that the listed properties might already be fulfilled due to the implementation details by the ledger. 
-For example, Bitcoin scripts are atomic by design.
+For example, UTXO ledgers are atomic by design while this property needs to be implemented by smart contracts in account-based ledgers.
 
 \subsubsection{Call integrity}
 A contracts state may depend on an external call. Specifically, a contract can (i) execute code of an external contract within its functions, (ii) call another contract's function and wait for its returned value, (iii) call another contract that changes the global state or re-enters the calling contract, or (iv) relies on an external oracle that updates the state of the contract.
