@@ -16,7 +16,8 @@ Tools listed in (B) are based on an interpretation of the low-level code for rea
 \normalsize
 \centering
 \includegraphics[width=\columnwidth]{fig/Verification.pdf}
-\caption{Different approaches of verification tools regarding their source for deriving a model or a set of formulas representing the system. Methods listed in (A) directly verify properties from the model or set of formulas from the low-level code. (B) describes tools using a model to verify the system. Last, (C) describes methods for verifying properties directly from the high-level code.}
+\caption{Tools can derive a model of the smart contract and the underlying system in different ways. 
+Methods listed in (A) directly verify specifications through a representation of the low-level semantics and the low-level implementation. (B) describes tools building a model from a low-level implementation. Last, (C) describes methods for verifying properties from the high-level code.}
 \label{fig:verification}
 \end{figure}
 
@@ -57,7 +58,7 @@ Maian works by symbolic execution of a model of EVM bytecode contracts to find t
 
 \subsubsection{Proof-based}
 $\mathbb{K}$ is a general purpose framework to define programming languages~\cite{Rosu2007}. It is used to build a $\mathbb{K}$ representation of the EVM, called KEVM~\cite{Hildenbrandt2017}. 
-%This VM has been successfully tested against the official test-set of the Ethereum Foundation for any new EVM implementation. 
+This VM has been successfully tested against the official test-set of the Ethereum Foundation for any new EVM implementation. 
 %Contracts like ERC20 can be specified in K as well~\cite{Park2018}. 
 A contract can be formally verified using the compiled bytecode, the $\mathbb{K}$ contract, and the KEVM virtual machine. 
 % Moreover, $\mathbb{K}$ is used to defined IELE~\cite{Kasampalis2018} and can be used to verify contracts based on this VM.
