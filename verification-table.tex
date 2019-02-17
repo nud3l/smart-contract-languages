@@ -1,9 +1,9 @@
-\begin{table}
+\begin{table*}
+\renewcommand{\arraystretch}{1.3}
 \centering
 \caption{Overview of model and proof-based verification tools for smart contracts.}
-
 \label{tab:model}
-\begin{tabularx}{\textwidth}{XXXXlXX}
+\begin{tabularx}{\textwidth}{XXXXXXr}
 \toprule
 \textbf{Tool} & \textbf{Approach} & \textbf{Automation} & \textbf{Coverage} & \textbf{Languages} & \textbf{Source} & \textbf{Ref.} \\ \toprule
 \emph{Securify} & model & full & full & Solidity, EVM & open & \cite{Tsankov2017} \\
@@ -21,5 +21,5 @@
 \justify
 \textsuperscript{\dag} We were not able to find open source code. \\
 \textsuperscript{\ddag} Theoretically these tools have a full coverage. However, implementation is as of September 2018 not completed.
-\end{table}
+\end{table*}
 

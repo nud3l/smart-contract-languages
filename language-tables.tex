@@ -1,33 +1,34 @@
-\begin{table}[h]
+\begin{table*}[h]
+\renewcommand{\arraystretch}{1.3}
 \centering
 \caption{Overview of languages for smart contracts.}
 \label{tab:high-level}
-\begin{tabularx}{\textwidth}{llXXXX}
+\begin{tabularx}{\textwidth}{XXXXXr}
 \toprule
 \textbf{Language} & \textbf{Paradigm} & \textbf{Instructions} & \textbf{Semantics} & \textbf{Metering} & \textbf{Ref.} \\ \toprule
-\textit{Solidity} & contract-oriented & complete & informal & gas, limit & \cite{Ethereum2018Solidity} \\
+\textit{Solidity} & contract-oriented, procedural & Turing-complete & informal & gas, limit & \cite{Ethereum2018Solidity} \\
 \textit{Vyper} & procedural & restricted & informal & gas, limit & \cite{Ethereum2018Vyper} \\
-\textit{Bamboo} & procedural & complete & semi\textsuperscript{\dag} & gas, limit & \cite{Hirai2018Bamboo} \\
-\textit{Flint} & procedural & complete & informal & gas, limit & \cite{Schrans2018} \\
-\textit{Pyramid Scheme} & functional & complete & informal & gas, limit & \cite{Burge2018} \\
+\textit{Bamboo} & procedural & Turing-complete & semi\textsuperscript{\dag} & gas, limit & \cite{Hirai2018Bamboo} \\
+\textit{Flint} & procedural & Turing-complete & informal & gas, limit & \cite{Schrans2018} \\
+\textit{Pyramid Scheme} & functional & Turing-complete & informal & gas, limit & \cite{Burge2018} \\
 \textit{Obsidian} & object-oriented & -- & informal & -- & \cite{Coblenz2017} \\
-\textit{Rholang} & concurrent & complete & informal & phlogiston & \cite{Meredith2018} \\
+\textit{Rholang} & concurrent & Turing-complete & informal & phlogiston & \cite{Meredith2018} \\
 \textit{Liquidity} & functional & restricted & semi\textsuperscript{\dag} & gas, limit & \cite{OCamlProSAS2018} \\
 \textit{DAML} & functional & restricted & -- & -- & \cite{Meier2018,Lippmeier2018} \\
 \textit{Pact} & functional & restricted & semi\textsuperscript{\dag} & gas, limit & \cite{Popejoy2017} \\
  \midrule
 \textit{Simplicity} & pure functional & restricted & formal & -- & \cite{OConnor2017} \\
 \textit{Scilla} & functional & restricted & formal & gas, limit & \cite{Sergey2018} \\
-\textit{Yul} & procedural & complete & informal & gas, limit & \cite{EthereumFoundation2018IULIA} \\
-%\textit{EthIR} & procedural & complete & informal & gas, limit & \cite{Albert2018} \\
-\textit{IELE} & register-based & complete & formal & gas, limit & \cite{Kasampalis2018} \\ \midrule
+\textit{Yul} & procedural & Turing-complete & informal & gas, limit & \cite{EthereumFoundation2018IULIA} \\
+%\textit{EthIR} & procedural & Turing-complete & informal & gas, limit & \cite{Albert2018} \\
+\textit{IELE} & register-based & Turing-complete & formal & gas, limit & \cite{Kasampalis2018} \\ \midrule
 \textit{Bitcoin Script} & stack-based & restricted & informal & script size & \cite{BitcoinWiki2018Script} \\
-\textit{EVM} & stack-based & complete & informal\textsuperscript{\ddag} & gas, limit & \cite{Wood2014} \\
-\textit{eWASM} & stack-based & complete & informal & gas, limit & \cite{EthereumFoundation2018ewasm} \\
+\textit{EVM} & stack-based & Turing-complete & informal\textsuperscript{\ddag} & gas, limit & \cite{Wood2014} \\
+\textit{eWASM} & stack-based & Turing-complete & informal & gas, limit & \cite{EthereumFoundation2018ewasm} \\
 \textit{Michelson} & stack-based & restricted & semi\textsuperscript{\dag} & gas, limit & \cite{DynamicLedgerSolutions2017} \\
 \bottomrule
 \end{tabularx}
 \justify
 \textsuperscript{\dag} These languages are actively developed. There are efforts to define a formal semantics. \\
 \textsuperscript{\ddag} The EVM has been informally defined in \cite{Wood2014}. Formal semantics have been defined afterwards by \cite{Hirai2017,Hildenbrandt2017}.
-\end{table}
+\end{table*}

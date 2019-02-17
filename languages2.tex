@@ -15,8 +15,10 @@ Last, some projects, like Bitcoin~\cite{BitcoinWiki2018Script}, require programm
 
 %\dha{For process (A) probably use Tezos or something like that that have a high-level language, IR and low-level lang.}
 
-\begin{figure}
-\includegraphics[width=\textwidth]{fig/Language.pdf}
+\begin{figure}[!t]
+\normalsize
+\centering
+\includegraphics[width=\columnwidth]{fig/Language.pdf}
 \caption{Different levels of smart contract languages with syntax closely resembled to Solidity (high-level), Scilla (IR), and EVM bytecode (low-evel). (A) represents an optimised version of compiling high-level languages towards the bytecode. The contract can be verified and optimised at that level, for example envisioned by~\cite{Sergey2018,OCamlProSAS2018}. (B) represents the  compilation from a high-level language to a bytecode representation as currently employed by Solidity and the EVM~\cite{Ethereum2018Solidity,Wood2014}.}
 \label{fig:languagediagram}
 \end{figure}
@@ -101,11 +103,15 @@ Particular types like assets or units also need to be defined appropriately.
 Languages including Scilla, Rholang, Bamboo, and Obsidian as well as interfaces to Solidity~\cite{Mavridou2018} represent contracts as finite state machines (FSM) or automata. This concept prevents reentrancy and allows to create explicit state transition function. A transaction that is sent to a contract with the intention to change the state either is successful or raises an exception. Moreover, this principle should prevent any calls to other contracts within a state transition function. A state might end or begin with a message (i.e.\ tail-call), but not have any external calls within the state that may change it unpredictably.
 % Also, EthIR presents precise data and control flow that allows building rule-based languages. Explicit state transitions support verification through a clear definition of pre- and post-conditions.
 
-\begin{lstlisting}[caption={A separation of states represented in Bamboo, where each state represents a different contract at the same address.},label=lst:fsm,language=Solidity]
+\begin{figure}[!h]
+\begin{lstlisting}[language=Solidity]
 contract Voting() { ... }
 contract VotingClosed() { ... }
 contract Result() { ... }
 \end{lstlisting}
+\caption{A separation of states represented in Bamboo, where each state represents a different contract at the same address.}
+\label{lst:fsm}
+\end{figure}
 
 \subsubsection{Functional programming}
 Pyramid Scheme, Vyper, Simplicity, Scilla, and Bamboo, as well as Pact and DAML, use functional programming paradigms. Functions in these languages can be designed to be \emph{atomic} and execute entirely or revert. Also, pure functions can be used to indicate that the local or global state is not affected. Functions can call pure functions, but no other state-changing functions.
@@ -136,13 +142,17 @@ The EVM offers three different call instructions to interact with other contract
 Another critical aspect is the possibility of calling other contracts. Executing code in other contracts can potentially introduce unexpected behaviour leading to unpredictable state changes. State changes can be made explicit by using an FSM or automata principle with \emph{tail-calls}. This principle is also suggested for Solidity~\cite{ConsenSys2018Security}.
 It offers a possibility to update the state of the contract and prevent potential adversaries to gain access to the contract control flow via reentrancy.
 
-\begin{lstlisting}[caption={Tail calls implemented in Solidity.},label=lst:tail-call,language=Solidity]
+\begin{figure}[!h]
+\begin{lstlisting}[language=Solidity]
 function claim(uint id) public {
     require(msg.sender == owner[id]);
     funds[id] = 0;
     msg.sender.transfer(funds[id]);
 }
 \end{lstlisting}
+\caption{Tail calls implemented in Solidity.}
+\label{lst:tail-call}
+\end{figure}
 
 
 %\subsubsection{Fallback functions}
@@ -150,10 +160,16 @@ function claim(uint id) public {
 
 \subsubsection{Restricted overriding}
 Overriding functions can lead to issues when reviewing code as it may not be clear which code is actually executed. Assume two functions as listed below.
-\begin{lstlisting}[caption={Function overriding with different inputs.},label=lst:tail-call,language=Solidity]
+
+\begin{figure}[!h]
+\begin{lstlisting}[language=Solidity]
 function transfer(address to, uint amount) {}
 function transfer(address from, address to, uint amount) {}
 \end{lstlisting}
+\caption{Function overriding with different inputs.}
+\label{lst:overriding}
+\end{figure}
+
 Both functions should theoretically implement the same behaviour. To prevent ambiguities languages like Vyper prevent function overriding.
 
 %\subsubsection{Stack limit}
