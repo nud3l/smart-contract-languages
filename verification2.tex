@@ -1,6 +1,8 @@
 \section{Verification methods}
 \label{verification}
 
+\dha{include MadMax \cite{Grech2018} Vandal \cite{Brent2018}}
+
 Verification approaches are outlined in figure \ref{fig:verification}. 
 (A) represents verification efforts that base their analysis on the implementation of the underlying distributed execution environment~\cite{Hildenbrandt2017,Hirai2017,Bhargavan2016,Grishchenko2018}.
 Tools listed in (B) are based on an interpretation of the low-level code for reasoning about properties in the contracts~\cite{Tsankov2017,Mueller2018,Luu2016,Albert2018,Grossman2017,Nikolic2018}. 
@@ -54,7 +56,7 @@ Maian works by symbolic execution of a model of EVM bytecode contracts to find t
 %They apply their method to verify these properties in real-world contracts.
 
 \subsubsection{Proof-based}
-$\mathbb{K}$ is a general purpose framework for defining programming languages~\cite{Rosu2007}. It is used to build a $\mathbb{K}$ representation of the EVM, called KEVM~\cite{Hildenbrandt2017}. 
+$\mathbb{K}$ is a general purpose framework to define programming languages~\cite{Rosu2007}. It is used to build a $\mathbb{K}$ representation of the EVM, called KEVM~\cite{Hildenbrandt2017}. 
 %This VM has been successfully tested against the official test-set of the Ethereum Foundation for any new EVM implementation. 
 %Contracts like ERC20 can be specified in K as well~\cite{Park2018}. 
 A contract can be formally verified using the compiled bytecode, the $\mathbb{K}$ contract, and the KEVM virtual machine. 

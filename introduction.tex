@@ -29,4 +29,19 @@ We contribute an overview of contract language security features including parad
 Further, we describe different efforts to verify software including model- and proof-based methods in Section~\ref{verification}. Our overview includes an analysis of the level of automation, coverage, and supported languages.
 Last, we introduce directions for future research in Section~\ref{discuss}.
 
+\subsection{Limitations}
+This paper focusses on safer smart contracts in relation to smart contract programming language design as well as design and coverage of verification tools.
+As such, there are limitations to this survey.
+We do not cover aspects related to a developers knowledge of a programming language.
+\citeauthor{Delmolino2016} and \citeauthor{DiAngelo2019} present a study on teaching safe smart contract practices~\cite{Delmolino2016,DiAngelo2019}.
+Further, we do not cover legal aspects.
+Smart contracts and their legal implementations are discussed in~\cite{Neal.2003,Governatori2006,Clack2016}.
+Yet, smart contracts do not necessarily have to have a ``real-world'' legal contract equivalent~\cite{Szabo1997,Nakamoto2008,Buterin2013}. 
+Projects like Mattereum try to bridge the gap between smart and legal contracts~\cite{Gupta}.
+Moreover, we do not cover issues that arise from misaligned incentives.
+Smart contracts encode mechanisms that can have explicit or implicit incentives.
+The design of these protocols relies on rational agents that behave \emph{truthfully} due to the incentives of the protocol.
+This field is closely related to algorithmic mechanism design~\cite{Nisan2007}, however, little work is done combining security and incentive design in the smart contract space.
+%Nonetheless, in both settings, the contract languages play a crucial role.
+
 %\subsubsection{Structure} The remainder of our article is structured as follows. Section \ref{background} introduces the background of contracts and languages to express them. We present an overview and a classification of languages in section \ref{languages}. Similarly, verification approaches are examined in section \ref{verification}. Results and future work is discussed in section \ref{discuss}. We conclude in section \ref{conclusion}.

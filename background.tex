@@ -24,7 +24,7 @@ Smart contracts execute agreements on a distributed ledger. %like Bitcoin or Eth
 %Consensus protocols enable \emph{distrusting parties} to create contracts and interact.
 However, no single definition of a smart contract exists.
 Information and definitions are scattered in academia and various communities (e.g.\ Bitcoin and Ethereum Improvement Proposals).
-Further, the capabilities of smart contracts range from minimal (e.g.\ Bitcoin) to restrictive (e.g.\ Scilla~\cite{Sergey2018}) to Turing-complete instruction sets (e.g.\ Ethereum). 
+Further, the capabilities of smart contracts range from minimal (e.g.\ Bitcoin), to restrictive (e.g.\ Scilla~\cite{Sergey2018}), to Turing-complete instruction sets (e.g.\ Ethereum). 
 We provide a brief overview of the technical components of a smart contract and the underlying execution environment.
 %Whether or not smart contracts have legal implications or not is also widely discussed.
 % Likewise, parties that have a form of \emph{trusted relationship} can utilise smart contracts on a ledger with stronger trust assumptions.
@@ -33,14 +33,6 @@ We provide a brief overview of the technical components of a smart contract and 
 %Results of contracts need to be fully deterministic so that each (honest) actor in the consensus protocol reaches a single common output with the same set of inputs.
 
 %\dha{No unique definition to smart contracts - Ethereum and Bitcoin understanding entirely different. Many information is scattered in developments, EIP/BIP, academia.}
-
-% Smart contracts can be used to encode legal contracts, much like the equivalent electronic contract systems~\cite{Neal.2003,Governatori2006,Clack2016}.
-% Yet, smart contracts do not necessarily have to have a ``real-world'' legal contract equivalent~\cite{Szabo1997,Nakamoto2008,Buterin2013}. 
-% In the legal context, disputes can be resolved in the traditional legal system of the original contract.
-% Where a smart contract does not have a related legal contract, dispute resolution must be included in the protocol of the contract.
-% If this is not the case, disputes might not be resolved.
-% Projects like Mattereum try to bridge the gap~\cite{Gupta}.
-% Nonetheless, in both settings, the contract languages play a crucial role.
 
 \subsection{Technical overview}
 %\dha{Explain the smart contract ``stack''}
@@ -60,12 +52,22 @@ Contracts have a local state, and their functions can be called multiple times.
 State-changing functions are invoked by sending a transaction to a contract function exposed via its Application Binary Interface (ABI)~\cite{Wood2014,Sergey2018,OCamlProSAS2018}.
 Contracts can typically access a global state to receive information stored in the ledger such as block timestamps, block hashes, or transaction data. 
 
-\subsubsection{Languages}
-There are three different levels of languages for smart contracts.
-High-level languages provide a way to express the desired contracts. Multiple high-level languages can exist in parallel to be executed on the same ledger. Examples are Solidity~\cite{Ethereum2018Solidity} and Liquidity~\cite{OCamlProSAS2018}.
-Intermediary representations (IR) are between low-level and high-level languages. IRs can be used to write programs to reason about properties (like safety or liveness) and build a basis for optimising code. Examples include Simplicity~\cite{OConnor2017} and Scilla~\cite{Sergey2018}.
-Low-level languages need to implement the contract in a deterministic way to be executed on a distributed virtual machine (VM). Examples include Bitcoin Script~\cite{BitcoinWiki2018Script} and EVM bytecode~\cite{Wood2014}.
-
+\subsubsection{Smart contract}
+Smart contracts are implemented by a low-level language.
+They are executed on a distributed virtual machine (VM) by multiple nodes in the distributed ledger.
+The outcome of a contract needs to be deterministic to reach consensus over its outcome.
+The low-level language ultimately determines how ``restrictive'' programs and protocols are on its ledger.
+While it would be sufficient to only provide a low-level language, it is often beneficial in software development to have languages with different abstraction levels and compilers in between.
+Apart from the low-level language, there are two more levels of languages for smart contracts.
+A high-level language can make it easier for developers to create new contracts and reason about existing contracts.
+Multiple high-level languages can exist in parallel to be executed on the same ledger. 
+They offer the highest level of abstraction.
+%Examples are Solidity~\cite{Ethereum2018Solidity} and Liquidity~\cite{OCamlProSAS2018}.
+Intermediary representations (IR) are in between low-level and high-level languages. 
+An IR can be a common target for multiple high-level languages.
+IRs can be used to reason about smart contract properties (like safety or liveness) and build a basis for optimising code. 
+High-level languages in return can profit from these methods and optimisations without having to implement them directly into their compilers.
+%Examples include Simplicity~\cite{OConnor2017} and Scilla~\cite{Sergey2018}.
 
 % However, this can introduce security issues when dependencies on the global state are introduced within the contract that can be influenced by parties outside of the contract (typically miners). Other issues revolve around calling into other, possibly faulty or unpredictable, contracts.
 
@@ -74,15 +76,20 @@ Low-level languages need to implement the contract in a deterministic way to be 
 %\dha{Explain verification efforts. Combination of smart contracts (the logic to be verified) and the ledger environment (the runtime environment).}
 
 \subsection{Security properties}
-Desired properties of smart contracts include safety and liveness~\cite{Sergey2018}.
+The general properties of safety and liveness apply to smart contracts as well~\cite{Sergey2018}.
 Safety refers to satisfying specific correctness properties during any state of a contract.
 Liveness describes that certain events may eventually occur.
 Analysis of vulnerabilities violating security properties with a focus on the EVM is presented in~\cite{Luu2016} and~\cite{Atzei2017}.
-\citeauthor{Grishchenko2018} extend this work by introducing a formal definition of general security properties for smart contracts with a focus on account-based distributed ledgers~\cite{Grishchenko2018}. We note that the listed security properties might already be fulfilled due to the restrictions imposed by the ledger. For example, Bitcoin scripts are atomic by design.
+\citeauthor{Grishchenko2018} extend this work by introducing a formal definition of general security properties for smart contracts with a focus on account-based distributed ledgers~\cite{Grishchenko2018}.
+Further, privacy of smart contracts is a concern~\cite{Kosba2015,Bowe2018,Covaci2018}.
+Last, smart contracts can have deadlocks due to metering restrictions and bugs in the implementation~\cite{Grech2018}.
+Hence, we add a liveness property as well.
+We note that the listed properties might already be fulfilled due to the implementation details by the ledger. 
+For example, Bitcoin scripts are atomic by design.
 
 \subsubsection{Call integrity}
-A contracts state may depend on an external call. Specifically, a contract can (i) execute code of an external contract within its functions, (ii) call another contract's function and wait for its returned value, or (iii) call another contract that changes the global state or re-enters the calling contract.
-The contract control flow should not be influenced by an adversary contract.
+A contracts state may depend on an external call. Specifically, a contract can (i) execute code of an external contract within its functions, (ii) call another contract's function and wait for its returned value, (iii) call another contract that changes the global state or re-enters the calling contract, or (iv) relies on an external oracle that updates the state of the contract.
+The contract control flow should not be influenced by an adversary contract or oracle.
 
 \subsubsection{Atomicity}
 Functions should be executed entirely or the state should be reverted, except when specifically allowed during exception handling.
@@ -91,6 +98,16 @@ Partial function execution might leave the contract open to malicious acts.
 
 \subsubsection{Independence}
 Transactions change the state of a contract. Miners and other parties can control or influence parameters in contracts or transactions. For example, a contract might use a timestamp-dependent function, which can in certain ranges be influenced by miners. Also, the ordering of transactions can be influenced by miners or others paying higher fees. Hence, contracts should ideally be independent of the global state or parameters that can be influenced externally.
+
+\subsubsection{Privacy}
+Transactions are hidden from the public except when explicitly and voluntarily disclosed by the involved parties.
+Smart contracts typically inherit the privacy assumptions from their underlying chain.
+However, advanced techniques such as zero-knowledge proofs can be employed to realise private smart contracts even on public non-privacy-preserving ledgers.
+
+\subsubsection{Liveness}
+A contracts state should not be locked, if not explicitly defined.
+For example, a contract might be forever stuck if it needs to loop through a too large array causing an \emph{out-of-gas} exception.
+
 
 \subsubsection{Runtime correctness}
 The properties above apply to general contracts. However, each contract serves a distinct purpose. Properties particular to the expected behaviour of a contract need to be defined to ensure the runtime correctness of the contract.
