@@ -1,25 +1,26 @@
 \begin{table*}
-\renewcommand{\arraystretch}{1.3}
 \centering
 \caption{Overview of model and proof-based verification tools for smart contracts.}
 \label{tab:model}
 \begin{tabularx}{\textwidth}{XXXXXXr}
 \toprule
-\textbf{Tool} & \textbf{Approach} & \textbf{Automation} & \textbf{Coverage} & \textbf{Languages} & \textbf{Source} & \textbf{Ref.} \\ \toprule
+\textbf{Tool} & \textbf{Approach} & \textbf{Automation} & \textbf{Coverage} & \textbf{Languages} & \textbf{Source} & \textbf{Ref.} \\ 
+\toprule
 \emph{Securify} & model & full & full & Solidity, EVM & open & \cite{Tsankov2017} \\
-\emph{Mythril} & model & full & property & EVM & open & \cite{Mueller2018} \\
-\emph{Oyente} & model & full & property & Solidity, EVM & open & \cite{Luu2016,Albert2018} \\
-\emph{ZEUS} & model & full & property & Solidity, Go, Java & closed\textsuperscript{\dag} & \cite{Kalra2018} \\
+\emph{MadMax} & model & full & property & EVM & open & \cite{Grech2018} \\ 
+\emph{Vandal} & model & full & property & EVM & open & \cite{Brent2018} \\ 
+\emph{ZEUS} & model & full & property & Solidity, Go, Java & closed & \cite{Kalra2018} \\
 \emph{ECF} & model & full & property & EVM & open & \cite{Grossman2017} \\
-\emph{Maian} & model & full & property & EVM & open & \cite{Nikolic2018} \\ \midrule
+\emph{Maian} & model & full & property & EVM & open & \cite{Nikolic2018} \\ 
+\emph{Mythril} & model & full & property & EVM & open & \cite{Mueller2018} \\	
+\emph{Oyente} & model & full & property & Solidity, EVM & open & \cite{Luu2016,Albert2018} \\
+\midrule
 \emph{$\mathbb{K}$} & proof & partial & full & EVM, IELE & open & \cite{Hildenbrandt2017,Park2018} \\
 \emph{Lem} & proof & partial & full & EVM & open & \cite{Hirai2017,Amani2018} \\
-\emph{Coq} & proof & partial & partial\textsuperscript{\ddag} & Scilla, Michelson & open & \cite{Sergey2018,DynamicLedgerSolutions2017} \\
-\emph{F*} & proof & partial & partial\textsuperscript{\ddag} & EVM & open & \cite{Bhargavan2016,Grishchenko2018} \\
+\emph{Coq} & proof & partial & partial\textsuperscript{\dag} & Scilla, Michelson & open & \cite{Sergey2018,DynamicLedgerSolutions2017} \\
+\emph{F*} & proof & partial & partial\textsuperscript{\dag} & EVM & open & \cite{Bhargavan2016,Grishchenko2018} \\
 \bottomrule
 \end{tabularx}
 \justify
-\textsuperscript{\dag} We were not able to find open source code. \\
-\textsuperscript{\ddag} Theoretically these tools have a full coverage. However, implementation is as of September 2018 not completed.
+\textsuperscript{\dag} Theoretically these tools have a full coverage. However, implementation is as of February 2019 not completed.
 \end{table*}
-

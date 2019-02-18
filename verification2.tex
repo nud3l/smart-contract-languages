@@ -1,13 +1,11 @@
 \section{Verification methods}
 \label{verification}
 
-\dha{include MadMax \cite{Grech2018} Vandal \cite{Brent2018}}
-
 Verification approaches are outlined in figure \ref{fig:verification}. 
 (A) represents verification efforts that base their analysis on the implementation of the underlying distributed execution environment~\cite{Hildenbrandt2017,Hirai2017,Bhargavan2016,Grishchenko2018}.
 Tools listed in (B) are based on an interpretation of the low-level code for reasoning about properties in the contracts~\cite{Tsankov2017,Mueller2018,Luu2016,Albert2018,Grossman2017,Nikolic2018}. 
 %ZEUS is an exception as it uses a high-level language to compile an IR and is not verifying properties based on the low-level code~\cite{Kalra2018}.
-(C) describes tools are implemented directly on the high-level code~\cite{Reitwiessner2015Why3,Alt2018}. 
+(C) describes tools are implemented directly on the high-level code~\cite{Alt2018}. 
 %Solidity can be annotated with Why3 statements to reason about the correctness of the contract~\cite{Reitwiessner2015Why3}. %Oyente can be used as presented well but will compile code into a Control Flow Graph (CFG). 
 %Those methods can help to find bugs in contracts, but since they do not operate directly on the low-level code, they rely on verified compilers to infer properties like safety or liveness.
 
@@ -47,13 +45,19 @@ Model-based methods arise from the need to check contracts for known vulnerabili
 
 \subsubsection{Model-based}
 Securify is a domain-specific model checker for smart contracts~\cite{Tsankov2017}. It compiles EVM bytecode to semantics facts and then uses a dialect of Datalog to define compliance and violation properties to verify the semantic facts. It classifies behaviours of a contract in compliance (matched by compliance properties), violations (matched by violation properties), and warnings (matched by neither). 
+MadMax is a tool that focusses on out-of-gas vulnerabilities in the EVM~\cite{Grech2018}.
+The authors decompiled smart contracts into a control-flow-graph to statically analyse the contracts.
+Vandal is a static analysis framework for analysing smart contracts~\cite{Brent2018}.
+It builds logic statements about contracts and their relations and uses Souffl\'{e} to reason about vulnerabilities.
+
+ZEUS uses Solidity or Java and Go (as Hyperledger Fabric contracts) as its basis for evaluation~\cite{Kalra2018}. It compiles these contracts into an abstract language. Next, properties defined in XACML are used to reason about the contract. The properties together with the abstract language contract get translated to LLVM bitcode for symbolic execution and verification of the properties.
+Effectively Callback Free (ECF) objects are a property that is analysed for Ethereum smart contracts\cite{Grossman2017}. A callback method opens up the possibility to change the state of an object (contract) from an external object (contract), which makes reasoning difficult. 
+The authors show that most Ethereum contracts are ECF except for those subject to the vulnerabilities similar to the DAO bug (also referred to reentrancy in other work).
+
+Maian works by symbolic execution of a model of EVM bytecode contracts to find trace vulnerabilities~\cite{Nikolic2018}. These vulnerabilities include contracts that leak Ether to unintended parties, can be killed by arbitrary users or lock Ether that cannot be received.
 Mythril uses LASER as a symbolic interpreter for EVM bytecode~\cite{Mueller2018}. EVM bytecode is disassembled into a Mythril object, and propositional logic is used to reason about the state space represented as a graph. 
 % It is based on the IR LASER~\cite{Mueller2018LASER}.
 Oyente~\cite{Luu2016} and its proposed extension EthIR~\cite{Albert2018} build a model from EVM bytecode to verify pre-defined properties. Properties include transaction ordering dependencies, timestamp dependencies, mishandled exceptions, and reentrancy.
-ZEUS uses Solidity or Java and Go (as Hyperledger Fabric contracts) as its basis for evaluation~\cite{Kalra2018}. It compiles these contracts into an abstract language. Next, properties defined in XACML are used to reason about the contract. The properties together with the abstract language contract get translated to LLVM bitcode for symbolic execution and verification of the properties.
-Effectively Callback Free (ECF) objects are a property that is analysed for Ethereum smart contracts\cite{Grossman2017}. A callback method opens up the possibility to change the state of an object (contract) from an external object (contract), which makes reasoning difficult. 
-%The authors show that most Ethereum contracts are ECF except for those subject to the vulnerabilities similar to the DAO bug (also referred to reentrancy in other work).
-Maian works by symbolic execution of a model of EVM bytecode contracts to find trace vulnerabilities~\cite{Nikolic2018}. These vulnerabilities include contracts that leak Ether to unintended parties, can be killed by arbitrary users or lock Ether that cannot be received.
 %They apply their method to verify these properties in real-world contracts.
 
 \subsubsection{Proof-based}
@@ -90,7 +94,7 @@ However, the security semantics  are not complete.
 Additional, contract specific properties need to be defined to ensure correctness of the program.
 By giving a formal specification of the contract functionalities, a contract can be deemed correct. This approach is beneficial for common standards (e.g. ERC20 or ERC721). 
 A short-coming of proof-based verification is that a verified contract might still contain bugs after verification (i.e.\ false-negative). 
-This can be caused by incomplete or inaccurate semantics as well as inaccurate or incomplete specifications~\cite{Hirai2016}.
+This can be caused by incomplete or inaccurate semantics as well as inaccurate or incomplete specifications.
 
 \subsection{Languages} 
 %Ethereum is the most popular platform for finding such vulnerabilities. 

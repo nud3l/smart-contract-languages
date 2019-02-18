@@ -3,7 +3,7 @@
 
 Figure \ref{fig:languagediagram} gives an overview of smart contract languages.
 Smart contracts are a comparably new discipline.
-Hence, early platforms offering smart contracts, like Ethereum, are using a direct compilation into the target low-level language as presented in (B)~\cite{Ethereum2018Solidity,Ethereum2018Vyper}.
+Hence, early platforms offering smart contracts, like Ethereum, are using a direct compilation into the target low-level language as presented in (B)~\cite{Ethereum2018Vyper}.
 The approach in (A) utilises intermediary representations to allow program optimisation and verification. 
 Among the projects that follow this approach is Tezos with Liquidity~\cite{OCamlProSAS2018} and Michelson~\cite{DynamicLedgerSolutions2017}. 
 Likewise, Scilla is an IR that is targeted by more general languages and compiles down to be executed on a distributed VM~\cite{Sergey2018}.
@@ -49,7 +49,7 @@ Obsidian models contracts as finite state machines (FSM) with explicit state tra
 Rholang is modeled by the $\rho$-calculus and focusses on concurrency and message-passing with statically typed communication channels~\cite{Meredith2018}.
 Liquidity has a restricted instruction set and enables formal verification~\cite{OCamlProSAS2018}.
 Rholang and Liquidity are intended for permissionless distributed ledgers.
-DAML is functional and developed for financial applications, primarily on permissioned ledgers~\cite{Meier2018,Lippmeier2018}.
+DAML is functional and developed for financial applications, primarily on permissioned ledgers~\cite{Meier2018}.
 Similar, Pact is designed for the Kadena permissioned blockchain~\cite{Popejoy2017}.
 Both have a restricted instruction set and with the intention to promote formal verification.
 
@@ -212,7 +212,7 @@ Hence, it could be a suitable type for any asset in a \texttt{transfer} like fun
 \subsubsection{Script size limit}
 Bitcoin Script uses a maximum script size of 10,000 bytes as a restriction to script complexity. 
 Combined with its restricted instruction set, this enables liveness properties of the network. 
-Merkelized Abstract Syntax Tree (MAST) is a proposal to allow larger scripts without increasing the script size limit~\cite{Harding2017}.
+Merkelized Abstract Syntax Tree (MAST) is a proposal to allow larger scripts without increasing the script size limit.
 Further, more complex protocols can be realised using a sequence of scripted transactions.
 %\dha{include implementation of protocols over multiple txs}
 
