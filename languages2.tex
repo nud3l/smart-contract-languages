@@ -3,13 +3,12 @@
 
 Figure \ref{fig:languagediagram} gives an overview of smart contract languages.
 Smart contracts are a comparably new discipline.
-Hence, early platforms offering smart contracts, like Ethereum, are using a direct compilation into the target language as presented in (B)~\cite{Ethereum2018Solidity,Ethereum2018Vyper}.
-The approach in (A) utilises intermediary representations to allow program optimisation and verification~\cite{OCamlProSAS2018,DynamicLedgerSolutions2017,Sergey2018}. 
-%Among the projects that follow this approach is Tezos with Liquidity~\cite{OCamlProSAS2018} and Michelson~\cite{DynamicLedgerSolutions2017}. Likewise, Scilla is an IR that is targeted by more general languages and compiles down to be executed on a distributed VM~\cite{Sergey2018}.
-%Ethereum is in the process of adopting this approach with Yul~\cite{EthereumFoundation2018IULIA}.
-Last, some projects, like Bitcoin~\cite{BitcoinWiki2018Script}, require programmers to write code directly in the low-level stack-based language.
-
-%Ethereum offers multiple high-level languages like Solidity that compile directly to EVM bytecode. 
+Hence, early platforms offering smart contracts, like Ethereum, are using a direct compilation into the target low-level language as presented in (B)~\cite{Ethereum2018Solidity,Ethereum2018Vyper}.
+The approach in (A) utilises intermediary representations to allow program optimisation and verification. 
+Among the projects that follow this approach is Tezos with Liquidity~\cite{OCamlProSAS2018} and Michelson~\cite{DynamicLedgerSolutions2017}. 
+Likewise, Scilla is an IR that is targeted by more general languages and compiles down to be executed on a distributed VM~\cite{Sergey2018}.
+Ethereum is in the process of adopting this approach with Yul~\cite{EthereumFoundation2018IULIA}.
+Last, some projects, like Bitcoin~\cite{BitcoinWiki2018Script}, typically use scripts directly written in the low-level stack-based language.
 
 
 
@@ -47,7 +46,7 @@ Pyramid Scheme is functional and imperative promoting separation of state-changi
 
 %High-level languages are proposed for other VMs or independent from the ledger implementation.
 Obsidian models contracts as finite state machines (FSM) with explicit state transition functions~\cite{Coblenz2017}.
-Rholang focusses on concurrency and message-passing with statically typed communication channels~\cite{Meredith2018}.
+Rholang is modeled by the $\rho$-calculus and focusses on concurrency and message-passing with statically typed communication channels~\cite{Meredith2018}.
 Liquidity has a restricted instruction set and enables formal verification~\cite{OCamlProSAS2018}.
 Rholang and Liquidity are intended for permissionless distributed ledgers.
 DAML is functional and developed for financial applications, primarily on permissioned ledgers~\cite{Meier2018,Lippmeier2018}.
@@ -100,7 +99,9 @@ Particular types like assets or units also need to be defined appropriately.
 % Apart from the dominant paradigm of the languages listed in table \ref{tab:high-level}, special design decisions were made in the languages.
 
 \subsubsection{Explicit state transitions}
-Languages including Scilla, Rholang, Bamboo, and Obsidian as well as interfaces to Solidity~\cite{Mavridou2018} represent contracts as finite state machines (FSM) or automata. This concept prevents reentrancy and allows to create explicit state transition function. A transaction that is sent to a contract with the intention to change the state either is successful or raises an exception. Moreover, this principle should prevent any calls to other contracts within a state transition function. A state might end or begin with a message (i.e.\ tail-call), but not have any external calls within the state that may change it unpredictably.
+Languages including Scilla, Rholang, Bamboo, and Obsidian as well as interfaces to Solidity~\cite{Mavridou2018} represent contracts with explicit state transitions. 
+This concept prevents reentrancy. 
+A transaction that is sent to a contract with the intention to change the state either is successful or raises an exception. Moreover, this principle should prevent any calls to other contracts within a state transition function. A state might end or begin with a message (i.e.\ tail-call), but not have any external calls within the state that may change it unpredictably.
 % Also, EthIR presents precise data and control flow that allows building rule-based languages. Explicit state transitions support verification through a clear definition of pre- and post-conditions.
 
 \begin{figure}[!h]
@@ -114,7 +115,7 @@ contract Result() { ... }
 \end{figure}
 
 \subsubsection{Functional programming}
-Pyramid Scheme, Vyper, Simplicity, Scilla, and Bamboo, as well as Pact and DAML, use functional programming paradigms. Functions in these languages can be designed to be \emph{atomic} and execute entirely or revert. Also, pure functions can be used to indicate that the local or global state is not affected. Functions can call pure functions, but no other state-changing functions.
+Pyramid Scheme, Simplicity, Scilla, and Bamboo, as well as Pact and DAML, use functional programming paradigms. Functions in these languages can be designed to be \emph{atomic} and execute entirely or revert. Also, pure functions can be used to indicate that the local or global state is not affected. Functions can call pure functions, but no other state-changing functions.
 
 \subsubsection{Logic programming}
 Logic-based languages are interesting as they closely resemble natural language contracts and have been explored in~\cite{Idelberger2016}. Logic languages can be purposely non-deterministic. However, they transfer the burden of determinism to the low-level languages and the compiler. Hence, they are likely more applicable to specifying properties in smart contracts rather than implementing the program logic.
@@ -134,8 +135,15 @@ In practice, infinite loops and recursion would block any node in the network ex
 \subsubsection{External function execution}
 The EVM offers three different call instructions to interact with other contracts. The execution context changes based on the invoked call. When using special types within a function like \texttt{msg.sender} or \texttt{msg.value}, the instruction determines which transaction the types refer to. Moreover, \texttt{delegatecall} grants storage access from the calling contract to the called contract. An adversarial contract might thus change the calling contracts storage (i.e.\ local state) arbitrarily. Hence, these external calls should be restricted, or special communication types handle their correct execution as, e.g.\ in Scilla.
 
+% \dha{rewrite this a bit more extensive}
 \subsubsection{Code re-use}
-\citeauthor{Pontiveros2018} proposes to re-use EVM code to optimise the space usage of code with a new op-code~\cite{Pontiveros2018}. This technique could be applied to reference proven secure code patterns.
+\citeauthor{Pontiveros2018} proposes to re-use EVM code to optimise the space usage of code with a new op-code~\cite{Pontiveros2018}. 
+The idea is to reference code of previously deployed contracts to safe space in new contract deployments.
+For example, a complex function that is already implemented in a deployed contract does not need to be re-implemented.
+A similar behaviour can be achieved by delegating a call to a library.
+This could be further extended by trusting only verified code.
+For example, token contracts could reference a formally verified token contract standard that implements functions like \texttt{balance} and \texttt{transfer} correctly.
+This would be similar to an on-chain variant of using libraries like OpenZeppelin.
 
 \subsection{Syntax}
 \subsubsection{Tail-calls}
@@ -170,7 +178,9 @@ function transfer(address from, address to, uint amount) {}
 \label{lst:overriding}
 \end{figure}
 
-Both functions should theoretically implement the same behaviour. To prevent ambiguities languages like Vyper prevent function overriding.
+%\dha{rewrite this - do they need to implement the same behaviour?}
+Reviewing becomes difficult when the behaviour of both functions is different.
+To prevent ambiguities, languages like Vyper prevent function overriding.
 
 %\subsubsection{Stack limit}
 
@@ -181,19 +191,30 @@ Hence, developers typically use libraries (e.g. \texttt{SafeMath}) to prevent or
 IELE, on the other hand, uses arbitrary-precision signed integers to prevent overflows altogether.
 
 \subsubsection{Formal semantics}
-Bamboo, Liquidity, Michelson, and Pact are planned to have a formal semantics once the languages are officially released.  Simplicity and Scilla have a formal semantics defined in Coq. IELE is defined in $\mathbb{K}$, and its implementation has been derived from the formal semantics.
+There are efforts to create a formal semantics for Solidity.
+Bamboo, Liquidity, Michelson, and Pact are planned to have a formal semantics once the languages are officially released.  
+Simplicity and Scilla have a formal semantics defined in Coq. IELE is defined in $\mathbb{K}$, and its implementation has been derived from the formal semantics.
 Low-level languages have been informally defined. In later work, the EVM has been formally defined in $\mathbb{K}$~\cite{Hildenbrandt2017}, Lem~\cite{Hirai2017}, and F*~\cite{Grishchenko2018}.
 As other languages have been informally defined, the correct interpretation of programs is left to the compiler. Creating a formal semantic for a higher-level language can enable the creation of verified compilers for said language and support verification efforts.
 
+%\dha{extend this paragraph}
 \subsubsection{Type system}
 Flint introduces additional types for declaring assets. Smart contracts typically operate on fungible or non-fungible assets. Instead of using existing types (e.g.\ \texttt{uint}), particular asset types can provide additional safety measures like enforcing updating balances before using a \texttt{call} operation sending the asset.
+Further, the use of \emph{linear types} are a proposed extension to handle assets in contract function.
+A variable with a linear type must be used exactly once and can only be exchanged.
+Hence, it could be a suitable type for any asset in a \texttt{transfer} like function.
+
 
 %\subsubsection{Type casting}
 
 \subsection{Metering}
 
 \subsubsection{Script size limit}
-Bitcoin Script uses a maximum script size of 10,000 bytes as a restriction to script complexity. Combined with its restricted instruction set, this enables liveness properties of the network. Merkelized Abstract Syntax Tree (MAST) is a proposal to allow larger scripts without increasing the script size limit~\cite{Harding2017}.
+Bitcoin Script uses a maximum script size of 10,000 bytes as a restriction to script complexity. 
+Combined with its restricted instruction set, this enables liveness properties of the network. 
+Merkelized Abstract Syntax Tree (MAST) is a proposal to allow larger scripts without increasing the script size limit~\cite{Harding2017}.
+Further, more complex protocols can be realised using a sequence of scripted transactions.
+%\dha{include implementation of protocols over multiple txs}
 
 \subsubsection{Gas}
 The EVM, eWASM, IELE, and Michelson use gas and a gas limit to restrict instructions. Rholang's phlogiston essentially implements the gas concept as well. While this allows for liveness of the network as it restricts denial of service attacks, it also opens possible out-of-gas errors. For example, when a function terminates directly after completing a transfer without updating its state (like an account balance), the function can be invoked again without affecting the balance.
@@ -208,8 +229,12 @@ Code is immutable in distributed ledgers. Hence, patterns using contract registr
 Since any local and global state needs to be deterministic and publicly verifiable in distributed ledgers, it is hard to obtain a source to generate pseudo-random numbers.
 Miners can influence block-related parameters like timestamps and hashes. The RANDAO suffers from costly implementation. A proposed solution is verifiable delay functions~\cite{Boneh2018}.
 
+%\dha{maybe exclude this section. Alterantive: sharing secrets is hard.}
 \subsubsection{Secrets}
-As information needs to be verifiable in distributed ledgers, secrets are hard to implement. Commit-reveal schemes make use of hash functions where a user commits to a value by publishing a public hash of the value. Also, zero-knowledge proofs like zk-SNARKS are used to hide information while keeping them verifiable~\cite{Sasson2014}.
+As information needs to be verifiable in distributed ledgers, sharing secrets is hard. 
+Commit-reveal schemes make use of hash functions where a user commits to a value by publishing a public hash of the value. 
+Also, zero-knowledge proofs are used to hide information while keeping them verifiable.
+However, exchanging secrets for protocols like payment channels still needs to be executed through a secure out-of-band channel.
 
 \subsubsection{Best practices}
 Apart from the features that a language supports, best practices can be applied to prevent unintended behaviours~\cite{Wohrer2018,ConsenSys2018Security}.
