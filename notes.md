@@ -26,7 +26,7 @@
 
 ## Verification
 
-- Peter Miller, valentin busholtz, maria kristakis
+- Peter Müller, Valentin Wüstholz, Maria Christakis
 - Scilla-checker?
 - Organise tools/verification models
 - Features of tools => type states
