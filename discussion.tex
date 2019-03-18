@@ -17,7 +17,7 @@ For example, the existing ERC20 formal verification covers the correct execution
 However, a malicious creator of an ERC20 contract could define additional functions to, e.g.\ increase the token balance of individual address or withdraw funds from the contract.
 A user of such contract could hardly detect such functions without the high-level language source code.
 Even worse, assuming functions are implemented correctly and free of vulnerabilities, neither formal verification nor model checking would flag the contract as incorrect.
-Holistic conditions can be created over any function of the contract based on the state variables and accessors to such variables.
+Holistic conditions can be created over any function of the contract based on the state variables and accessors to such variables~\cite{Drossopoulou2018}.
 % This can be used to verify that the contract does not contain malicious functions.
 Model checkers or formal verification tools could then determine that (i) the intended functions can update specific state variables correctly and (ii) the absence of any other function that change state variables (e.g.\ balances or total supply of tokens).
 In doubt, a user could verify the necessity of such functions with the creator of a contract before interacting with it.
