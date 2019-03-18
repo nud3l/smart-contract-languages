@@ -2,14 +2,16 @@
 \centering
 \caption{Overview of languages for smart contracts.}
 \label{tab:high-level}
-\begin{tabularx}{\textwidth}{XXXXXr}
+\begin{tabularx}{\textwidth}{XXXXXXXXXr}
 \toprule
-\textbf{Language} & \textbf{Paradigm} & \textbf{Instructions} & \textbf{Semantics} & \textbf{Metering} & \textbf{Ref.} \\ \toprule
+\textbf{Language} & \textbf{Paradigm} & \textbf{Instructions} & \textbf{Semantics} & \textbf{Metering} & \textbf{Multi-threading} & \textbf{Compiler} & \textbf{Inspired by} & \textbf{Platform} & \textbf{Ref.} \\ \toprule
 \textit{Solidity} & object-oriented & Turing-complete & informal\textsuperscript{\dag} & gas, limit & \cite{Ethereum2018Solidity} \\
 \textit{Vyper} & procedural & restricted & informal\textsuperscript{\dag} & gas, limit & \cite{Ethereum2018Vyper} \\
 \textit{Bamboo} & procedural & Turing-complete & semi\textsuperscript{\dag} & gas, limit & \cite{Hirai2018Bamboo} \\
 \textit{Flint} & procedural & Turing-complete & informal & gas, limit & \cite{Schrans2018} \\
 \textit{Pyramid Scheme} & functional & Turing-complete & informal & gas, limit & \cite{Burge2018} \\
+\textit{Plutus} & functional & Turing-complete & formal & gas, limit & \cite{Plutus2019GitHub} \\
+\textit{Marlowe} & functional & Turing-complete & formal & gas, limit & \cite{Seijas2018} \\
 \textit{Obsidian} & object-oriented & -- & informal & -- & \cite{Coblenz2017} \\
 \textit{Rholang} & $\rho$-calculus (based on $\pi$-calculus) & Turing-complete & informal & phlogiston & \cite{Meredith2018} \\
 \textit{Liquidity} & functional & restricted & semi\textsuperscript{\dag} & gas, limit & \cite{OCamlProSAS2018} \\
